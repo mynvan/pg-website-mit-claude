@@ -493,3 +493,13 @@ html { scroll-padding-top: 96px; }
 	background: var(--deco-arcs) 105% center / auto 170% no-repeat;
 }
 .band--dark :is(h2, p, .wp-block-buttons) { position: relative; z-index: 1; }
+
+/* ---------- Kontaktblock / Trust ---------- */
+.contact-line { margin: 0 0 16px; line-height: 1.5; }
+.contact-line strong { font-size: .8125rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.contact-line a { font-family: var(--serif); font-size: 1.375rem; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--accent); }
+.contact-line a:hover { color: var(--accent); }
+.check-list { list-style: none; padding: 0; margin: 0 0 20px; }
+.check-list li { position: relative; padding: 0 0 12px 28px; }
+.check-list li::before { content: ""; position: absolute; left: 0; top: .5em; width: 10px; height: 10px; background: var(--accent); transform: rotate(45deg) scale(.8); }
+.trust-line { padding-top: 16px; border-top: 1px solid var(--line-strong); font-size: .9375rem; color: var(--muted); }
