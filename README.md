@@ -1,8 +1,7 @@
-# philippgebhart.de – WordPress-Theme und Plugin
+# philippgebhart.de – WordPress-Theme "Gebhart"
 
-Struktur entspricht `wp-content/`:
+Klassisches Theme ohne Page Builder. Das Repo ist das Theme selbst und wird nach
+`wp-content/themes/gebhart` bereitgestellt (Hostinger Git, Branch `main`).
 
-- `themes/gebhart` – Theme (klassisch, ohne Page Builder)
-- `plugins/gebhart-referenzen` – Custom Post Type "Referenzen" + Taxonomie "Leistung"
-
-Deployment: Hostinger Git → `public_html/wp-content`.
+- `inc/referenzen.php`: Inhaltstyp "Referenzen", Taxonomie "Leistung", Felder
+- `patterns/startseite.php`: Block-Muster der Startseite

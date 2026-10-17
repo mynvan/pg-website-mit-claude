@@ -1,12 +1,6 @@
 <?php
 /**
- * Plugin Name: Gebhart Referenzen
- * Description: Inhaltstyp "Referenz" mit Taxonomie "Leistung" und festen Feldern (Kunde, Branche, Jahr, Leistungen, URL, Ausgangslage, Vorgehen, Ergebnis). Bleibt beim Theme-Wechsel erhalten.
- * Version: 1.0.0
- * Requires at least: 6.0
- * Requires PHP: 7.4
- * Author: Philipp Gebhart
- * Text Domain: gebhart-referenzen
+ * Inhaltstyp "Referenz" mit Taxonomie "Leistung" und festen Feldern.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -222,15 +216,10 @@ function gebhart_ref_get( $key, $post_id = 0 ) {
 }
 
 /**
- * Rewrite-Regeln beim Aktivieren und Deaktivieren aktualisieren.
+ * Rewrite-Regeln beim Aktivieren des Themes aktualisieren.
  */
-function gebhart_ref_activate() {
+function gebhart_ref_after_switch() {
 	gebhart_ref_register();
 	flush_rewrite_rules();
 }
-register_activation_hook( __FILE__, 'gebhart_ref_activate' );
-
-function gebhart_ref_deactivate() {
-	flush_rewrite_rules();
-}
-register_deactivation_hook( __FILE__, 'gebhart_ref_deactivate' );
+add_action( 'after_switch_theme', 'gebhart_ref_after_switch' );
