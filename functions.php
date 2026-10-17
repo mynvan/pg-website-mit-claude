@@ -349,7 +349,7 @@ function gebhart_contact_form() {
 		<div class="gebhart-form__row gebhart-form__check">
 			<label>
 				<input type="checkbox" name="ct_privacy" value="1" required>
-				<span>Ich habe die <a href="<?php echo esc_url( home_url( '/datenschutz/' ) ); ?>">Datenschutzerklärung</a> gelesen und bin mit der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage einverstanden. *</span>
+				<span>Ich habe die <a href="<?php echo esc_url( get_privacy_policy_url() ? get_privacy_policy_url() : home_url( '/datenschutz/' ) ); ?>">Datenschutzerklärung</a> gelesen und bin mit der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage einverstanden. *</span>
 			</label>
 		</div>
 		<button class="btn" type="submit">Anfrage senden ↗</button>
