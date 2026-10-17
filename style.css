@@ -537,3 +537,7 @@ html { scroll-padding-top: 96px; }
 
 .review-widget { margin-top: 32px; }
 .review-widget .ti-widget { max-width: 100%; }
+
+/* Rezensions-Widget: bricht aus dem Content-Raster aus (fast volle Breite) */
+.band--dark .review-widget { width: 100vw; max-width: none; margin-left: calc(50% - 50vw); padding-inline: clamp(12px, 2.5vw, 40px); box-sizing: border-box; }
+.band--dark .review-widget .ti-widget { max-width: 1600px; margin-inline: auto; }

@@ -231,6 +231,22 @@
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
+<!-- wp:group {"className":"block-section band--dark"} -->
+<div class="wp-block-group block-section band--dark"><!-- wp:paragraph {"className":"eyebrow"} -->
+<p class="eyebrow">Stimmen von Kunden</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Das sagen Kunden und Teilnehmer auf Google.</h2>
+<!-- /wp:heading -->
+
+<!-- wp:group {"className":"review-widget"} -->
+<div class="wp-block-group review-widget"><!-- wp:shortcode -->
+[trustindex no-registration=google]
+<!-- /wp:shortcode --></div>
+<!-- /wp:group --></div>
+<!-- /wp:group -->
+
 <!-- wp:group {"className":"block-section band--panel"} -->
 <div class="wp-block-group block-section band--panel"><!-- wp:paragraph {"className":"eyebrow"} -->
 <p class="eyebrow">SEO</p>
