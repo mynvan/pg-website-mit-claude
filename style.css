@@ -513,7 +513,7 @@ html { scroll-padding-top: 96px; }
 .review__who strong { color: var(--ink); }
 .review__more { margin-top: 24px; }
 
-.review-slider { display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding-bottom: 8px; margin-top: 32px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.review-slider { scroll-padding-inline: var(--gutter); display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding-bottom: 8px; margin-top: 32px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
 .review-slider::-webkit-scrollbar { display: none; }
 .entry-content .review-slider > .review,
 .entry-content .review-slider > .wp-block-group__inner-container > .review { flex: 0 0 min(420px, 84%); scroll-snap-align: start; }
