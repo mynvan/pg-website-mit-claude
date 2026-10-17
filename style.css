@@ -522,3 +522,14 @@ html { scroll-padding-top: 96px; }
 .review-nav button:disabled { opacity: .35; cursor: default; }
 .review-nav .review__more { margin: 0 0 0 auto; }
 @media (prefers-reduced-motion: reduce) { .review-slider { scroll-behavior: auto; } }
+
+/* Rezensionen auf dunklem Band */
+.band--dark .review__quote, .band--dark .review__quote p { color: var(--on-dark); }
+.band--dark .review__who { color: var(--on-dark-muted); }
+.band--dark .review__who strong { color: var(--on-dark); }
+.band--dark .review__stars { color: #F08A3C; }
+.band--dark .review { border-top-color: #F08A3C; }
+.band--dark .review-nav button { border-color: rgba(249,247,243,.3); color: var(--on-dark); }
+.band--dark .review-nav button:hover:not(:disabled) { border-color: #F08A3C; color: #F08A3C; }
+.band--dark .review-slider, .band--dark .review-nav { position: relative; z-index: 1; }
+.band--dark .eyebrow { color: #F08A3C; }
