@@ -222,8 +222,7 @@ a:hover { color: var(--accent-hover); }
 .entry-content > .hero > .wp-block-group__inner-container > h1 { max-width: calc(780px + var(--gutter) * 2); }
 .entry-content > .hero > p,
 .entry-content > .hero > .wp-block-group__inner-container > p { max-width: calc(600px + var(--gutter) * 2); }
-.hero[style*="background-image"] { background-repeat: no-repeat; background-color: var(--bg); background-blend-mode: multiply; position: relative; }
-.hero[style*="background-image"]::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 56px; background: linear-gradient(to top, var(--bg), rgba(249, 247, 243, 0)); pointer-events: none; }
+.hero[style*="background-image"] { background-repeat: no-repeat; background-color: var(--bg); background-blend-mode: multiply; position: relative; z-index: 1; box-shadow: 0 8px 14px -10px rgba(20, 18, 16, .28); }
 @media (min-width: 900px) {
 	.entry-content > .hero[style*="background-image"] > .wp-block-group__inner-container > :is(h1, p),
 	.entry-content > .hero[style*="background-image"] > :is(h1, p) { max-width: calc(560px + var(--gutter) * 2); }
