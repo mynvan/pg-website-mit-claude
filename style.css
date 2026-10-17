@@ -124,6 +124,7 @@ a:hover { color: var(--accent-hover); }
 }
 .admin-bar .site-header { top: 32px; }
 @media (max-width: 782px) { .admin-bar .site-header { top: 46px; } }
+@media (max-width: 600px) { .admin-bar .site-header { top: 0; } }
 @media (max-width: 899px) { .site-header { max-height: 100vh; overflow-y: auto; } }
 html { scroll-padding-top: 96px; }
 .site-header__inner {
