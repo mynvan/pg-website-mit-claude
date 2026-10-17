@@ -312,7 +312,7 @@ function gebhart_contact_form() {
 		echo '<div id="anfrage" class="form-note form-note--error" role="alert"><p>Das hat leider nicht geklappt. Bitte versuche es noch einmal oder schreibe mir direkt per E-Mail.</p></div>';
 	}
 	?>
-	<form class="gebhart-form" method="post" action=" echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+	<form class="gebhart-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 		<input type="hidden" name="action" value="gebhart_kontakt">
 		<div class="gebhart-form__hp" aria-hidden="true">
 			<label>Dieses Feld bitte leer lassen <input type="text" name="firma_zusatz" tabindex="-1" autocomplete="off"></label>
@@ -337,9 +337,9 @@ function gebhart_contact_form() {
 		<div class="gebhart-form__row">
 			<label for="gf-topic">Worum geht es?</label>
 			<select id="gf-topic" name="ct_topic">
-				 foreach ( gebhart_form_topics() as $topic ) : ?>
-					<option value=" echo esc_attr( $topic ); ?>"> echo esc_html( $topic ); ?></option>
-				 endforeach; ?>
+				<?php foreach ( gebhart_form_topics() as $topic ) : ?>
+					<option value="<?php echo esc_attr( $topic ); ?>"><?php echo esc_html( $topic ); ?></option>
+				<?php endforeach; ?>
 			</select>
 		</div>
 		<div class="gebhart-form__row">
@@ -349,12 +349,12 @@ function gebhart_contact_form() {
 		<div class="gebhart-form__row gebhart-form__check">
 			<label>
 				<input type="checkbox" name="ct_privacy" value="1" required>
-				<span>Ich habe die <a href=" echo esc_url( home_url( '/datenschutz/' ) ); ?>">Datenschutzerklärung</a> gelesen und bin mit der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage einverstanden. *</span>
+				<span>Ich habe die <a href="<?php echo esc_url( home_url( '/datenschutz/' ) ); ?>">Datenschutzerklärung</a> gelesen und bin mit der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage einverstanden. *</span>
 			</label>
 		</div>
 		<button class="btn" type="submit">Anfrage senden ↗</button>
 	</form>
-	
+	<?php
 	return ob_get_clean();
 }
 add_shortcode( 'gebhart_kontaktformular', 'gebhart_contact_form' );
@@ -398,7 +398,7 @@ function gebhart_contact_handle() {
 		$done( 'fehler' );
 	}
 
-	$body  = "Neue Projektanfrage über " . home_url( '/' ) . "\n\n";
+	$body  = 'Neue Projektanfrage über ' . home_url( '/' ) . "\n\n";
 	$body .= "Name: $name\nE-Mail: $mail\nTelefon: " . ( $tel ? $tel : '–' ) . "\nWebsite: " . ( $web ? $web : '–' ) . "\nThema: " . ( $topic ? $topic : '–' ) . "\n\n";
 	$body .= "Vorhaben:\n$msg\n\n";
 	$body .= "Datenschutzerklärung zum Zeitpunkt der Anfrage bestätigt: ja\n";
