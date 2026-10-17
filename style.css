@@ -374,9 +374,11 @@ html { scroll-padding-top: 96px; }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }
 
 /* ---------- Kontaktformular ---------- */
-.form-section > .wp-block-group__inner-container > .wp-block-shortcode,
-.form-section > .wp-block-shortcode { max-width: calc(720px + var(--gutter) * 2); }
-.gebhart-form { display: flex; flex-direction: column; gap: 20px; max-width: 720px; }
+.entry-content > .form-section > .wp-block-group__inner-container > .gebhart-form,
+.entry-content > .form-section > .wp-block-group__inner-container > .form-note,
+.entry-content > .form-section > .gebhart-form,
+.entry-content > .form-section > .form-note { max-width: calc(720px + var(--gutter) * 2); }
+.gebhart-form { display: flex; flex-direction: column; gap: 20px; }
 .gebhart-form__row { display: flex; flex-direction: column; gap: 6px; }
 .gebhart-form label { font-size: 15px; font-weight: 600; color: var(--ink); }
 .gebhart-form input[type="text"], .gebhart-form input[type="email"], .gebhart-form input[type="tel"],
@@ -390,6 +392,6 @@ html { scroll-padding-top: 96px; }
 .gebhart-form__check input { margin-top: 4px; flex: none; width: 18px; height: 18px; }
 .gebhart-form .btn { align-self: flex-start; }
 .gebhart-form__hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-.form-note { max-width: 720px; padding: 16px 20px; border-left: 3px solid var(--accent); background: var(--panel); margin-bottom: 24px; }
+.form-note { padding-block: 16px; border-left: 3px solid var(--accent); background: var(--panel); margin-bottom: 24px; }
 .form-note p { margin: 0; }
 .form-note--ok { border-left-color: #2E7D4F; }
