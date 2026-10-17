@@ -503,3 +503,12 @@ html { scroll-padding-top: 96px; }
 .check-list li { position: relative; padding: 0 0 12px 28px; }
 .check-list li::before { content: ""; position: absolute; left: 0; top: .5em; width: 10px; height: 10px; background: var(--accent); transform: rotate(45deg) scale(.8); }
 .trust-line { padding-top: 16px; border-top: 1px solid var(--line-strong); font-size: .9375rem; color: var(--muted); }
+
+/* ---------- Rezensionen ---------- */
+.review { border-top: 2px solid var(--accent); padding-top: 20px; }
+.review__stars { color: var(--accent); letter-spacing: .12em; margin: 0 0 8px; font-size: 1.125rem; }
+.review__quote { margin: 0 0 16px; padding: 0; border: 0; font-family: var(--serif); font-size: 1.1875rem; line-height: 1.5; color: var(--ink); }
+.review__quote p { margin: 0; }
+.review__who { margin: 0; font-size: .9375rem; color: var(--muted); }
+.review__who strong { color: var(--ink); }
+.review__more { margin-top: 24px; }
