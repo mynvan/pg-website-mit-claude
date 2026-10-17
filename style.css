@@ -534,3 +534,6 @@ html { scroll-padding-top: 96px; }
 .band--dark .review-nav button:hover:not(:disabled) { border-color: #F08A3C; color: #F08A3C; }
 .band--dark .review-slider, .band--dark .review-nav { position: relative; z-index: 1; }
 .band--dark .eyebrow { color: #F08A3C; }
+
+.review-widget { margin-top: 32px; }
+.review-widget .ti-widget { max-width: 100%; }
