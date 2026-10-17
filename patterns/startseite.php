@@ -49,12 +49,8 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:group {"className":"grid-4"} -->
-<div class="wp-block-group grid-4"><!-- wp:group {"className":"item"} -->
-<div class="wp-block-group item"><!-- wp:paragraph {"className":"item__no"} -->
-<p class="item__no">01</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"level":3} -->
+<div class="wp-block-group grid-4"><!-- wp:group {"className":"item icon-target"} -->
+<div class="wp-block-group item icon-target"><!-- wp:heading {"level":3} -->
 <h3 class="wp-block-heading">Angebot und Zielgruppe</h3>
 <!-- /wp:heading -->
 
@@ -63,12 +59,8 @@
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
-<!-- wp:group {"className":"item"} -->
-<div class="wp-block-group item"><!-- wp:paragraph {"className":"item__no"} -->
-<p class="item__no">02</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"level":3} -->
+<!-- wp:group {"className":"item icon-layout"} -->
+<div class="wp-block-group item icon-layout"><!-- wp:heading {"level":3} -->
 <h3 class="wp-block-heading">Inhalte und Funktionen</h3>
 <!-- /wp:heading -->
 
@@ -77,12 +69,8 @@
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
-<!-- wp:group {"className":"item"} -->
-<div class="wp-block-group item"><!-- wp:paragraph {"className":"item__no"} -->
-<p class="item__no">03</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"level":3} -->
+<!-- wp:group {"className":"item icon-wrench"} -->
+<div class="wp-block-group item icon-wrench"><!-- wp:heading {"level":3} -->
 <h3 class="wp-block-heading">Pflege und Weiterentwicklung</h3>
 <!-- /wp:heading -->
 
@@ -91,12 +79,8 @@
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
-<!-- wp:group {"className":"item"} -->
-<div class="wp-block-group item"><!-- wp:paragraph {"className":"item__no"} -->
-<p class="item__no">04</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"level":3} -->
+<!-- wp:group {"className":"item icon-server"} -->
+<div class="wp-block-group item icon-server"><!-- wp:heading {"level":3} -->
 <h3 class="wp-block-heading">Technik und Betrieb</h3>
 <!-- /wp:heading -->
 
@@ -117,12 +101,8 @@
 <!-- /wp:heading -->
 
 <!-- wp:group {"className":"grid-3"} -->
-<div class="wp-block-group grid-3"><!-- wp:group {"className":"item"} -->
-<div class="wp-block-group item"><!-- wp:paragraph {"className":"item__no"} -->
-<p class="item__no">01</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"level":3} -->
+<div class="wp-block-group grid-3"><!-- wp:group {"className":"item icon-browser"} -->
+<div class="wp-block-group item icon-browser"><!-- wp:heading {"level":3} -->
 <h3 class="wp-block-heading">Eine neue Website für dein Unternehmen</h3>
 <!-- /wp:heading -->
 
@@ -153,12 +133,8 @@
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
-<!-- wp:group {"className":"item"} -->
-<div class="wp-block-group item"><!-- wp:paragraph {"className":"item__no"} -->
-<p class="item__no">02</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"level":3} -->
+<!-- wp:group {"className":"item icon-refresh"} -->
+<div class="wp-block-group item icon-refresh"><!-- wp:heading {"level":3} -->
 <h3 class="wp-block-heading">Eine bestehende Website auf eine bessere Grundlage stellen</h3>
 <!-- /wp:heading -->
 
@@ -185,12 +161,8 @@
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
-<!-- wp:group {"className":"item"} -->
-<div class="wp-block-group item"><!-- wp:paragraph {"className":"item__no"} -->
-<p class="item__no">03</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"level":3} -->
+<!-- wp:group {"className":"item icon-shield"} -->
+<div class="wp-block-group item icon-shield"><!-- wp:heading {"level":3} -->
 <h3 class="wp-block-heading">Nach dem Go-live einen Ansprechpartner behalten</h3>
 <!-- /wp:heading -->
 
@@ -267,12 +239,8 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:group {"className":"grid-4"} -->
-<div class="wp-block-group grid-4"><!-- wp:group {"className":"item"} -->
-<div class="wp-block-group item"><!-- wp:paragraph {"className":"item__no"} -->
-<p class="item__no">01</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"level":3} -->
+<div class="wp-block-group grid-4"><!-- wp:group {"className":"item icon-clipboard"} -->
+<div class="wp-block-group item icon-clipboard"><!-- wp:heading {"level":3} -->
 <h3 class="wp-block-heading">Voraussetzungen prüfen</h3>
 <!-- /wp:heading -->
 
@@ -281,12 +249,8 @@
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
-<!-- wp:group {"className":"item"} -->
-<div class="wp-block-group item"><!-- wp:paragraph {"className":"item__no"} -->
-<p class="item__no">02</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"level":3} -->
+<!-- wp:group {"className":"item icon-search"} -->
+<div class="wp-block-group item icon-search"><!-- wp:heading {"level":3} -->
 <h3 class="wp-block-heading">Suchintention verstehen</h3>
 <!-- /wp:heading -->
 
@@ -295,12 +259,8 @@
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
-<!-- wp:group {"className":"item"} -->
-<div class="wp-block-group item"><!-- wp:paragraph {"className":"item__no"} -->
-<p class="item__no">03</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"level":3} -->
+<!-- wp:group {"className":"item icon-document"} -->
+<div class="wp-block-group item icon-document"><!-- wp:heading {"level":3} -->
 <h3 class="wp-block-heading">Inhalte optimieren</h3>
 <!-- /wp:heading -->
 
@@ -309,12 +269,8 @@
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
-<!-- wp:group {"className":"item"} -->
-<div class="wp-block-group item"><!-- wp:paragraph {"className":"item__no"} -->
-<p class="item__no">04</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"level":3} -->
+<!-- wp:group {"className":"item icon-pin"} -->
+<div class="wp-block-group item icon-pin"><!-- wp:heading {"level":3} -->
 <h3 class="wp-block-heading">Lokal gefunden werden</h3>
 <!-- /wp:heading -->
 
