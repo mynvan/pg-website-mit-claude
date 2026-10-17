@@ -290,3 +290,125 @@ function gebhart_date( $post_id = 0 ) {
 function gebhart_contact_url() {
 	return home_url( '/projektanfrage/' );
 }
+
+/* ---------- Kontaktformular für die Projektanfrage ----------
+ * Shortcode: [gebhart_kontaktformular]. Schutz: Honeypot, Begrenzung pro IP, Längen- und Link-Prüfung.
+ * Empfänger: E-Mail-Adresse unter Einstellungen > Allgemein.
+ */
+
+function gebhart_form_topics() {
+	return array( 'Neue Website', 'Website-Relaunch', 'Wartung & Betreuung', 'SEO', 'Etwas anderes' );
+}
+
+function gebhart_contact_form() {
+	$status = isset( $_GET['anfrage'] ) ? sanitize_key( wp_unslash( $_GET['anfrage'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
+	ob_start();
+
+	if ( 'ok' === $status ) {
+		echo '<div id="anfrage" class="form-note form-note--ok" role="status"><p><strong>Danke für deine Anfrage!</strong> Ich habe sie erhalten und melde mich bei dir.</p></div>';
+		return ob_get_clean();
+	}
+	if ( 'fehler' === $status ) {
+		echo '<div id="anfrage" class="form-note form-note--error" role="alert"><p>Das hat leider nicht geklappt. Bitte versuche es noch einmal oder schreibe mir direkt per E-Mail.</p></div>';
+	}
+	?>
+	<form class="gebhart-form" method="post" action=" echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+		<input type="hidden" name="action" value="gebhart_kontakt">
+		<div class="gebhart-form__hp" aria-hidden="true">
+			<label>Dieses Feld bitte leer lassen <input type="text" name="firma_zusatz" tabindex="-1" autocomplete="off"></label>
+		</div>
+
+		<div class="gebhart-form__row">
+			<label for="gf-name">Name *</label>
+			<input id="gf-name" type="text" name="ct_name" required maxlength="120" placeholder="Vor- und Nachname" autocomplete="name">
+		</div>
+		<div class="gebhart-form__row">
+			<label for="gf-mail">E-Mail *</label>
+			<input id="gf-mail" type="email" name="ct_mail" required maxlength="160" placeholder="name@firma.de" autocomplete="email">
+		</div>
+		<div class="gebhart-form__row">
+			<label for="gf-tel">Telefon (optional)</label>
+			<input id="gf-tel" type="tel" name="ct_tel" maxlength="60" placeholder="Für einen Rückruf" autocomplete="tel">
+		</div>
+		<div class="gebhart-form__row">
+			<label for="gf-web">Aktuelle Website (optional)</label>
+			<input id="gf-web" type="url" name="ct_web" maxlength="200" placeholder="https://">
+		</div>
+		<div class="gebhart-form__row">
+			<label for="gf-topic">Worum geht es?</label>
+			<select id="gf-topic" name="ct_topic">
+				 foreach ( gebhart_form_topics() as $topic ) : ?>
+					<option value=" echo esc_attr( $topic ); ?>"> echo esc_html( $topic ); ?></option>
+				 endforeach; ?>
+			</select>
+		</div>
+		<div class="gebhart-form__row">
+			<label for="gf-msg">Dein Vorhaben *</label>
+			<textarea id="gf-msg" name="ct_msg" required rows="6" maxlength="4000" placeholder="Was soll deine Website künftig leisten? Was ist der Anlass?"></textarea>
+		</div>
+		<div class="gebhart-form__row gebhart-form__check">
+			<label>
+				<input type="checkbox" name="ct_privacy" value="1" required>
+				<span>Ich habe die <a href=" echo esc_url( home_url( '/datenschutz/' ) ); ?>">Datenschutzerklärung</a> gelesen und bin mit der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage einverstanden. *</span>
+			</label>
+		</div>
+		<button class="btn" type="submit">Anfrage senden ↗</button>
+	</form>
+	
+	return ob_get_clean();
+}
+add_shortcode( 'gebhart_kontaktformular', 'gebhart_contact_form' );
+
+function gebhart_contact_handle() {
+	$back = wp_get_referer();
+	$back = $back ? remove_query_arg( 'anfrage', $back ) : home_url( '/projektanfrage/' );
+	$done = function ( $state ) use ( $back ) {
+		wp_safe_redirect( add_query_arg( 'anfrage', $state, $back ) . '#anfrage' );
+		exit;
+	};
+
+	// Honeypot: Bots füllen das versteckte Feld aus. Sie bekommen "ok", damit sie es nicht weiter versuchen.
+	if ( ! empty( $_POST['firma_zusatz'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+		$done( 'ok' );
+	}
+
+	// Pro IP höchstens 5 Anfragen pro Stunde.
+	$ip  = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+	$key = 'gebhart_ct_' . md5( $ip );
+	$cnt = (int) get_transient( $key );
+	if ( $cnt >= 5 ) {
+		$done( 'fehler' );
+	}
+	set_transient( $key, $cnt + 1, HOUR_IN_SECONDS );
+
+	// phpcs:disable WordPress.Security.NonceVerification
+	$name  = isset( $_POST['ct_name'] ) ? sanitize_text_field( wp_unslash( $_POST['ct_name'] ) ) : '';
+	$mail  = isset( $_POST['ct_mail'] ) ? sanitize_email( wp_unslash( $_POST['ct_mail'] ) ) : '';
+	$tel   = isset( $_POST['ct_tel'] ) ? sanitize_text_field( wp_unslash( $_POST['ct_tel'] ) ) : '';
+	$web   = isset( $_POST['ct_web'] ) ? esc_url_raw( wp_unslash( $_POST['ct_web'] ) ) : '';
+	$topic = isset( $_POST['ct_topic'] ) ? sanitize_text_field( wp_unslash( $_POST['ct_topic'] ) ) : '';
+	$msg   = isset( $_POST['ct_msg'] ) ? sanitize_textarea_field( wp_unslash( $_POST['ct_msg'] ) ) : '';
+	$priv  = ! empty( $_POST['ct_privacy'] );
+	// phpcs:enable
+
+	if ( ! in_array( $topic, gebhart_form_topics(), true ) ) {
+		$topic = '';
+	}
+	if ( '' === $name || ! is_email( $mail ) || '' === $msg || ! $priv || mb_strlen( $msg ) > 4000 || substr_count( strtolower( $msg ), 'http' ) > 3 ) {
+		$done( 'fehler' );
+	}
+
+	$body  = "Neue Projektanfrage über " . home_url( '/' ) . "\n\n";
+	$body .= "Name: $name\nE-Mail: $mail\nTelefon: " . ( $tel ? $tel : '–' ) . "\nWebsite: " . ( $web ? $web : '–' ) . "\nThema: " . ( $topic ? $topic : '–' ) . "\n\n";
+	$body .= "Vorhaben:\n$msg\n\n";
+	$body .= "Datenschutzerklärung zum Zeitpunkt der Anfrage bestätigt: ja\n";
+
+	$headers = array(
+		'Content-Type: text/plain; charset=UTF-8',
+		'Reply-To: ' . $name . ' <' . $mail . '>',
+	);
+	$sent = wp_mail( get_option( 'admin_email' ), 'Projektanfrage von ' . $name, $body, $headers );
+	$done( $sent ? 'ok' : 'fehler' );
+}
+add_action( 'admin_post_nopriv_gebhart_kontakt', 'gebhart_contact_handle' );
+add_action( 'admin_post_gebhart_kontakt', 'gebhart_contact_handle' );
