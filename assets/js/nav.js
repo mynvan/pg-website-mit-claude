@@ -39,3 +39,40 @@
 		io.observe( hub );
 	} );
 } )();
+
+/* Rezensions-Slider: Pfeile zum Blättern, Wischen und Tastatur funktionieren nativ. */
+( function () {
+	document.querySelectorAll( '.review-slider' ).forEach( function ( slider ) {
+		var nav = document.createElement( 'div' );
+		nav.className = 'review-nav';
+		var prev = document.createElement( 'button' );
+		var next = document.createElement( 'button' );
+		prev.type = next.type = 'button';
+		prev.setAttribute( 'aria-label', 'Vorherige Rezension' );
+		next.setAttribute( 'aria-label', 'Nächste Rezension' );
+		prev.textContent = '\u2190';
+		next.textContent = '\u2192';
+		nav.appendChild( prev );
+		nav.appendChild( next );
+		slider.parentNode.insertBefore( nav, slider.nextSibling );
+		var more = document.querySelector( '.review__more' );
+		if ( more ) {
+			nav.appendChild( more );
+		}
+		slider.setAttribute( 'tabindex', '0' );
+		slider.setAttribute( 'aria-label', 'Kundenstimmen' );
+		function step() {
+			var c = slider.querySelector( '.review' );
+			return c ? c.getBoundingClientRect().width + 24 : 300;
+		}
+		function update() {
+			prev.disabled = slider.scrollLeft < 4;
+			next.disabled = slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 4;
+		}
+		prev.addEventListener( 'click', function () { slider.scrollBy( { left: -step() } ); } );
+		next.addEventListener( 'click', function () { slider.scrollBy( { left: step() } ); } );
+		slider.addEventListener( 'scroll', update, { passive: true } );
+		window.addEventListener( 'resize', update );
+		update();
+	} );
+} )();

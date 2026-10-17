@@ -512,3 +512,13 @@ html { scroll-padding-top: 96px; }
 .review__who { margin: 0; font-size: .9375rem; color: var(--muted); }
 .review__who strong { color: var(--ink); }
 .review__more { margin-top: 24px; }
+
+.review-slider { display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding-bottom: 8px; margin-top: 32px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.review-slider::-webkit-scrollbar { display: none; }
+.entry-content .review-slider > .review { flex: 0 0 min(420px, 84%); scroll-snap-align: start; }
+.review-nav { display: flex; gap: 8px; margin-top: 20px; align-items: center; }
+.review-nav button { width: 44px; height: 44px; border: 1px solid var(--line-strong); background: transparent; color: var(--ink); font-size: 1.25rem; line-height: 1; cursor: pointer; border-radius: var(--radius); }
+.review-nav button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.review-nav button:disabled { opacity: .35; cursor: default; }
+.review-nav .review__more { margin: 0 0 0 auto; }
+@media (prefers-reduced-motion: reduce) { .review-slider { scroll-behavior: auto; } }
