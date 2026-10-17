@@ -472,3 +472,24 @@ html { scroll-padding-top: 96px; }
 @media (prefers-reduced-motion: reduce) {
 	.hub *, .hub *::before { animation: none !important; transition: none !important; }
 }
+
+/* ---------- Akzente (Kreisbögen, Linien mit Rauten) ---------- */
+:root { --deco-hero: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1942' height='809' viewBox='0 0 1942 809' fill='none'%3E%3Cg stroke='%23EF6500' stroke-width='1' opacity='0.22'%3E%3Cpath d='M 994 286 A 340 330 0 0 1 1480 43'/%3E%3Cpath d='M 1490 47 A 340 330 0 0 1 1669 397'/%3E%3Cpath d='M 1460 107 A 274 266 0 0 1 1810 571'/%3E%3C/g%3E%3Cdefs%3E%3ClinearGradient id='lineLeft' x1='883' y1='286' x2='1115' y2='286' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23EF6500' stop-opacity='0.65'/%3E%3Cstop offset='1' stop-color='%23EF6500' stop-opacity='0.08'/%3E%3C/linearGradient%3E%3ClinearGradient id='lineRight' x1='1700' y1='286' x2='1860' y2='286' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23EF6500' stop-opacity='0.65'/%3E%3Cstop offset='1' stop-color='%23EF6500' stop-opacity='0.08'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M 889 286 H 1115' stroke='url(%23lineLeft)' stroke-width='1'/%3E%3Cpath d='M 1706 286 H 1860' stroke='url(%23lineRight)' stroke-width='1'/%3E%3Cg stroke='%23EF6500' stroke-width='1.3' opacity='0.8'%3E%3Cpath d='M 883 280 L 889 286 L 883 292 L 877 286 Z'/%3E%3Cpath d='M 1700 280 L 1706 286 L 1700 292 L 1694 286 Z'/%3E%3C/g%3E%3C/svg%3E"); --deco-arcs: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1942' height='809' viewBox='0 0 1942 809' fill='none'%3E%3Cg stroke='%23EF6500' stroke-width='1' opacity='0.22'%3E%3Cpath d='M 994 286 A 340 330 0 0 1 1480 43'/%3E%3Cpath d='M 1490 47 A 340 330 0 0 1 1669 397'/%3E%3Cpath d='M 1460 107 A 274 266 0 0 1 1810 571'/%3E%3C/g%3E%3C/svg%3E"); }
+.hero[style*="background-image"]::before {
+	content: ""; position: absolute; inset: 0; pointer-events: none;
+	background: var(--deco-hero) right center / cover no-repeat; mix-blend-mode: multiply;
+}
+@media (max-width: 899px) { .hero[style*="background-image"]::before { background-position: right bottom; background-size: 130% auto; } }
+.hero--arcs { position: relative; }
+.hero--arcs::before {
+	content: ""; position: absolute; inset: 0; pointer-events: none;
+	background: var(--deco-arcs) right center / auto 130% no-repeat;
+}
+.hero--arcs :is(h1, h2, p, .wp-block-buttons, figure) { position: relative; z-index: 1; }
+.hero--arcs .wp-block-columns { position: relative; z-index: 1; }
+.band--dark { position: relative; overflow: hidden; }
+.band--dark::before {
+	content: ""; position: absolute; inset: 0; pointer-events: none;
+	background: var(--deco-arcs) 105% center / auto 170% no-repeat;
+}
+.band--dark :is(h2, p, .wp-block-buttons) { position: relative; z-index: 1; }
