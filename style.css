@@ -118,7 +118,14 @@ a:hover { color: var(--accent-hover); }
 .site-header {
 	background: var(--bg);
 	border-bottom: 1px solid var(--line);
+	position: sticky;
+	top: 0;
+	z-index: 100;
 }
+.admin-bar .site-header { top: 32px; }
+@media (max-width: 782px) { .admin-bar .site-header { top: 46px; } }
+@media (max-width: 899px) { .site-header { max-height: 100vh; overflow-y: auto; } }
+html { scroll-padding-top: 96px; }
 .site-header__inner {
 	display: flex;
 	flex-wrap: wrap;
@@ -303,7 +310,7 @@ a:hover { color: var(--accent-hover); }
 @media (min-width: 900px) {
 	.single-ref { grid-template-columns: minmax(0, 1fr) 320px; column-gap: 64px; }
 	.single-ref__head, .single-ref__media, .single-ref__body { grid-column: 1; }
-	.single-ref__facts { grid-column: 2; grid-row: 1 / span 3; align-self: start; position: sticky; top: 24px; }
+	.single-ref__facts { grid-column: 2; grid-row: 1 / span 3; align-self: start; position: sticky; top: 104px; }
 }
 .next-link { display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--line); padding-top: 32px; text-decoration: none; }
 .next-link strong { font-family: var(--serif); font-weight: 400; font-size: 28px; color: var(--ink); }
