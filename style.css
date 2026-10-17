@@ -515,7 +515,8 @@ html { scroll-padding-top: 96px; }
 
 .review-slider { display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding-bottom: 8px; margin-top: 32px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
 .review-slider::-webkit-scrollbar { display: none; }
-.entry-content .review-slider > .review { flex: 0 0 min(420px, 84%); scroll-snap-align: start; }
+.entry-content .review-slider > .review,
+.entry-content .review-slider > .wp-block-group__inner-container > .review { flex: 0 0 min(420px, 84%); scroll-snap-align: start; }
 .review-nav { display: flex; gap: 8px; margin-top: 20px; align-items: center; }
 .review-nav button { width: 44px; height: 44px; border: 1px solid var(--line-strong); background: transparent; color: var(--ink); font-size: 1.25rem; line-height: 1; cursor: pointer; border-radius: var(--radius); }
 .review-nav button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
