@@ -828,5 +828,9 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 .hj{transform-box:fill-box;transform-origin:center;animation:hj 1.5s cubic-bezier(.23,1,.32,1) var(--d,0s) both}
 @keyframes hj{from{opacity:.45;transform:translate(var(--x),var(--y)) rotate(var(--r))}to{opacity:1;transform:none}}
 .hg{opacity:.4;animation:hg .8s cubic-bezier(.23,1,.32,1) 1.9s both}
-@keyframes hg{from{opacity:0}to{opacity:.4}}
+@keyframes hg{from{opacity:0}to{opacity:var(--hgo,.4)}}
 @media (min-width:1100px){.entry-content .hero--art .hero__art{width:min(40%,560px)}}
+.hero__art-cap{margin:12px 0 0;font-size:.8125rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-text);font-weight:600;animation:hg .8s cubic-bezier(.23,1,.32,1) 1.9s both}
+.hero__art-cap::before{content:"";display:inline-block;width:20px;height:1px;margin-right:10px;vertical-align:middle;background:var(--accent)}
+@media (min-width:1100px){.entry-content .hero--art .hero__art{translate:0 -54%}}
+.hero__art-cap{--hgo:1}
