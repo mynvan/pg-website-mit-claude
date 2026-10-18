@@ -166,12 +166,18 @@
 	}
 
 	steps.forEach( function ( li ) {
-		li.querySelector( '.process__btn' ).addEventListener( 'click', function () {
+		function go() {
+			var n = parseInt( li.getAttribute( 'data-step' ), 10 );
 			stop();
 			paused = false;
-			set( parseInt( li.getAttribute( 'data-step' ), 10 ) );
+			if ( ! reduce ) {
+				set( 0 );
+				void stage.offsetWidth;
+			}
+			set( n );
 			label();
-		} );
+		}
+		li.addEventListener( 'click', go );
 	} );
 
 	if ( reduce ) {
