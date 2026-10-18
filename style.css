@@ -823,3 +823,10 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 .process--rl .process__stage[data-state="0"] .pf__row b{transition:none}
 .entry-content > .block-section > :is(.grid-2, .grid-3, .grid-4, .scope) + *,
 .entry-content > .block-section > .wp-block-group__inner-container > :is(.grid-2, .grid-3, .grid-4, .scope) + * { margin-top: 40px; }
+/* Hero Relaunch: Elemente ordnen sich zur Struktur */
+.hero__art{max-width:560px}
+.hj{transform-box:fill-box;transform-origin:center;animation:hj 1.5s cubic-bezier(.23,1,.32,1) var(--d,0s) both}
+@keyframes hj{from{opacity:.45;transform:translate(var(--x),var(--y)) rotate(var(--r))}to{opacity:1;transform:none}}
+.hg{opacity:.4;animation:hg .8s cubic-bezier(.23,1,.32,1) 1.9s both}
+@keyframes hg{from{opacity:0}to{opacity:.4}}
+@media (min-width:1100px){.entry-content .hero--art .hero__art{width:min(40%,560px)}}
