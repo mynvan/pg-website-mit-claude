@@ -107,3 +107,104 @@
 	} );
 	hubs.forEach( function ( hub ) { io.observe( hub ); } );
 } )();
+
+/* Ablauf-Animation: fünf Zustände, einmalige Wiedergabe beim Einblenden, Schritte und Pause bedienbar. */
+( function () {
+	var root = document.querySelector( '[data-process]' );
+	if ( ! root ) {
+		return;
+	}
+	var stage = root.querySelector( '.process__stage' );
+	var steps = Array.prototype.slice.call( root.querySelectorAll( '.process__step' ) );
+	var playBtn = root.querySelector( '.process__play' );
+	var reduce = window.matchMedia && window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
+	var state = 5, timer = null, playing = false, paused = false;
+
+	function set( n ) {
+		state = n;
+		stage.setAttribute( 'data-state', n );
+		steps.forEach( function ( li ) {
+			var on = parseInt( li.getAttribute( 'data-step' ), 10 ) === n;
+			li.classList.toggle( 'is-active', on );
+			if ( on ) {
+				li.querySelector( '.process__btn' ).setAttribute( 'aria-current', 'step' );
+			} else {
+				li.querySelector( '.process__btn' ).removeAttribute( 'aria-current' );
+			}
+		} );
+	}
+	function label() {
+		if ( ! playBtn ) { return; }
+		playBtn.textContent = playing ? 'Pause' : ( paused ? 'Fortsetzen' : ( state === 5 ? 'Nochmal ansehen' : 'Ablauf abspielen' ) );
+	}
+	function stop() {
+		window.clearTimeout( timer );
+		timer = null;
+		playing = false;
+	}
+	function tick() {
+		timer = window.setTimeout( function () {
+			if ( state < 5 ) {
+				set( state + 1 );
+			}
+			if ( state < 5 ) {
+				tick();
+			} else {
+				stop();
+				paused = false;
+				label();
+			}
+		}, 2000 );
+	}
+	function play( from ) {
+		stop();
+		paused = false;
+		set( from );
+		playing = true;
+		label();
+		tick();
+	}
+
+	steps.forEach( function ( li ) {
+		li.querySelector( '.process__btn' ).addEventListener( 'click', function () {
+			stop();
+			paused = false;
+			set( parseInt( li.getAttribute( 'data-step' ), 10 ) );
+			label();
+		} );
+	} );
+
+	if ( reduce ) {
+		return;
+	}
+	set( 1 );
+	if ( playBtn ) {
+		playBtn.hidden = false;
+		label();
+		playBtn.addEventListener( 'click', function () {
+			if ( playing ) {
+				stop();
+				paused = true;
+				label();
+			} else if ( paused ) {
+				paused = false;
+				playing = true;
+				label();
+				tick();
+			} else {
+				play( 1 );
+			}
+		} );
+	}
+	if ( 'IntersectionObserver' in window ) {
+		var io = new IntersectionObserver( function ( entries ) {
+			if ( entries[ 0 ].isIntersecting ) {
+				io.disconnect();
+				play( 1 );
+			}
+		}, { threshold: 0.5 } );
+		io.observe( stage );
+	} else {
+		set( 5 );
+	}
+} )();
