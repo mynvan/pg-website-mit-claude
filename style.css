@@ -563,8 +563,8 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 @media (max-width: 781px) {
 	.hero--arcs::before { display: none; }
 	.hero--arcs .wp-block-column:last-child { flex-basis: 100% !important; }
-	.hero--arcs figure.wp-block-image { position: relative; width: min(62%, 260px); aspect-ratio: 1; margin: 12px auto 28px; }
-	.hero--arcs figure.wp-block-image img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; border-radius: 50%; display: block; }
+	.hero--arcs figure.wp-block-image { position: relative; width: min(62%, 260px); aspect-ratio: 1; margin: 12px auto 28px !important; }
+	.hero--arcs figure.wp-block-image img { width: 100% !important; height: 100% !important; aspect-ratio: 1; object-fit: cover; object-position: 50% 22%; border-radius: 50% !important; display: block; }
 	.hero--arcs figure.wp-block-image::before,
 	.hero--arcs figure.wp-block-image::after {
 		content: ""; position: absolute; border-radius: 50%; pointer-events: none;
