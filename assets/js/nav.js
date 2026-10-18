@@ -243,3 +243,75 @@
 		} );
 	} );
 } )();
+
+/* Relaunch: "Einmal pflegen. Mehrfach ausgeben." – drei Zustände, einmal automatisch, danach manuell */
+( function () {
+	var root = document.querySelector( '[data-keep]' );
+	if ( ! root ) {
+		return;
+	}
+	var tabs = Array.prototype.slice.call( root.querySelectorAll( '.keep__tabs button' ) );
+	var play = root.querySelector( '.keep__play' );
+	var reduce = window.matchMedia && window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
+	var state = 3, timer = null;
+
+	function set( n ) {
+		state = n;
+		root.setAttribute( 'data-state', n );
+		tabs.forEach( function ( b ) { b.setAttribute( 'aria-pressed', String( parseInt( b.getAttribute( 'data-s' ), 10 ) === n ) ); } );
+	}
+	function label() {
+		play.textContent = timer ? 'Pause' : ( state >= 3 ? 'Nochmal abspielen' : 'Weiter' );
+	}
+	function stop() {
+		clearTimeout( timer );
+		timer = null;
+	}
+	function run() {
+		stop();
+		if ( state >= 3 ) {
+			label();
+			return;
+		}
+		timer = setTimeout( function () {
+			timer = null;
+			set( state + 1 );
+			run();
+		}, 2400 );
+		label();
+	}
+	tabs.forEach( function ( b ) {
+		b.addEventListener( 'click', function () {
+			stop();
+			set( parseInt( b.getAttribute( 'data-s' ), 10 ) );
+			if ( play ) { label(); }
+		} );
+	} );
+	if ( reduce || ! play ) {
+		return;
+	}
+	play.hidden = false;
+	play.addEventListener( 'click', function () {
+		if ( timer ) {
+			stop();
+		} else {
+			if ( state >= 3 ) { set( 1 ); }
+			run();
+			return;
+		}
+		label();
+	} );
+	set( 1 );
+	label();
+	if ( 'IntersectionObserver' in window ) {
+		var io = new IntersectionObserver( function ( entries ) {
+			if ( entries[ 0 ].isIntersecting ) {
+				io.disconnect();
+				run();
+			}
+		}, { threshold: 0.5 } );
+		io.observe( root );
+	} else {
+		set( 3 );
+	}
+} )();
