@@ -315,3 +315,104 @@
 		set( 3 );
 	}
 } )();
+
+/* Wartung: gemeinsamer Hosting-Schalter für beide Preisspalten (ohne JS bleibt die Textzeile sichtbar). */
+( function () {
+	document.querySelectorAll( '[data-plans]' ).forEach( function ( root ) {
+		var input = root.querySelector( '[data-hosting]' );
+		var sw = root.querySelector( '.plans__switch' );
+		var status = root.querySelector( '[data-plans-status]' );
+		if ( ! input || ! sw ) {
+			return;
+		}
+		root.classList.add( 'is-js' );
+		sw.hidden = false;
+		function update() {
+			var on = input.checked;
+			root.classList.toggle( 'is-hosting', on );
+			var said = [];
+			root.querySelectorAll( '.plan__price' ).forEach( function ( p ) {
+				var v = p.getAttribute( on ? 'data-host' : 'data-base' );
+				p.querySelector( '.plan__amount' ).textContent = v + ' €';
+				said.push( v + ' €' );
+			} );
+			if ( status ) {
+				status.textContent = ( on ? 'Mit Hosting inklusive E-Mail: ' : 'Ohne Hosting: ' ) + said.join( ' und ' ) + ' netto pro Monat.';
+			}
+		}
+		input.addEventListener( 'change', update );
+		update();
+	} );
+} )();
+
+/* Wartung: Ablauf in vier Zuständen. Statisch beim Laden, Start per Button, einmal durch, danach manuell. */
+( function () {
+	var root = document.querySelector( '[data-care]' );
+	if ( ! root ) {
+		return;
+	}
+	var tabs = Array.prototype.slice.call( root.querySelectorAll( '.care__tabs button' ) );
+	var play = root.querySelector( '.care__play' );
+	var reduce = window.matchMedia && window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
+	var LAST = 4, state = 1, timer = null;
+
+	function set( n ) {
+		state = n;
+		root.setAttribute( 'data-state', n );
+		tabs.forEach( function ( b ) { b.setAttribute( 'aria-pressed', String( parseInt( b.getAttribute( 'data-s' ), 10 ) === n ) ); } );
+	}
+	function replay( n ) {
+		root.classList.add( 'is-reset' );
+		root.setAttribute( 'data-state', '0' );
+		void root.offsetWidth;
+		root.classList.remove( 'is-reset' );
+		set( n );
+	}
+	function label() {
+		if ( play ) {
+			play.textContent = timer ? 'Pause' : ( state >= LAST ? 'Nochmal abspielen' : ( state > 1 ? 'Weiter abspielen' : 'Ablauf abspielen' ) );
+		}
+	}
+	function stop() {
+		clearTimeout( timer );
+		timer = null;
+	}
+	function run() {
+		stop();
+		timer = setTimeout( function () {
+			timer = null;
+			if ( state < LAST ) {
+				set( state + 1 );
+				if ( state < LAST ) {
+					run();
+					return;
+				}
+			}
+			label();
+		}, 1800 );
+		label();
+	}
+	tabs.forEach( function ( b ) {
+		b.addEventListener( 'click', function () {
+			stop();
+			replay( parseInt( b.getAttribute( 'data-s' ), 10 ) );
+			label();
+		} );
+	} );
+	if ( reduce || ! play ) {
+		return;
+	}
+	play.hidden = false;
+	play.addEventListener( 'click', function () {
+		if ( timer ) {
+			stop();
+			label();
+			return;
+		}
+		if ( state >= LAST ) {
+			replay( 1 );
+		}
+		run();
+	} );
+	label();
+} )();
