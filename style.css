@@ -583,6 +583,11 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 	.process__stage { grid-column: 2; grid-row: 1; position: sticky; top: 120px; }
 }
 .process__stage { width: 100%; aspect-ratio: 16 / 11; }
+@media (max-width: 899px) {
+	.process { display: block; }
+	.process__stage { position: sticky; top: 72px; z-index: 5; aspect-ratio: 16 / 9; max-height: 34vh; margin-bottom: 24px; box-shadow: 0 10px 0 6px var(--panel); }
+	.process__step { scroll-margin-top: 40vh; }
+}
 .pf { height: 100%; display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line-strong); border-radius: var(--radius); overflow: hidden; }
 .pf__bar { flex: none; display: flex; gap: 6px; align-items: center; padding: 0 12px; height: 28px; border-bottom: 1px solid var(--line); }
 .pf__bar i { width: 8px; height: 8px; border-radius: 50%; background: var(--line-strong); }

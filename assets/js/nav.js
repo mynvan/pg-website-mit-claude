@@ -108,7 +108,7 @@
 	hubs.forEach( function ( hub ) { io.observe( hub ); } );
 } )();
 
-/* Ablauf-Animation: fünf Zustände, einmalige Wiedergabe beim Einblenden, Schritte und Pause bedienbar. */
+/* Ablauf-Animation: folgt dem Scrollen. Der Schritt, der die Leselinie erreicht, bestimmt die Grafik; Klick spielt ihn erneut ab. */
 ( function () {
 	var root = document.querySelector( '[data-process]' );
 	if ( ! root ) {
@@ -116,9 +116,8 @@
 	}
 	var stage = root.querySelector( '.process__stage' );
 	var steps = Array.prototype.slice.call( root.querySelectorAll( '.process__step' ) );
-	var playBtn = root.querySelector( '.process__play' );
 	var reduce = window.matchMedia && window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
-	var state = 5, timer = null, playing = false, paused = false;
+	var state = 5, ticking = false;
 
 	function set( n ) {
 		state = n;
@@ -126,93 +125,51 @@
 		steps.forEach( function ( li ) {
 			var on = parseInt( li.getAttribute( 'data-step' ), 10 ) === n;
 			li.classList.toggle( 'is-active', on );
+			var b = li.querySelector( '.process__btn' );
 			if ( on ) {
-				li.querySelector( '.process__btn' ).setAttribute( 'aria-current', 'step' );
+				b.setAttribute( 'aria-current', 'step' );
 			} else {
-				li.querySelector( '.process__btn' ).removeAttribute( 'aria-current' );
+				b.removeAttribute( 'aria-current' );
 			}
 		} );
 	}
-	function label() {
-		if ( ! playBtn ) { return; }
-		playBtn.textContent = playing ? 'Pause' : ( paused ? 'Fortsetzen' : ( state === 5 ? 'Nochmal ansehen' : 'Ablauf abspielen' ) );
-	}
-	function stop() {
-		window.clearTimeout( timer );
-		timer = null;
-		playing = false;
-	}
-	function tick() {
-		timer = window.setTimeout( function () {
-			if ( state < 5 ) {
-				set( state + 1 );
-			}
-			if ( state < 5 ) {
-				tick();
-			} else {
-				stop();
-				paused = false;
-				label();
-			}
-		}, 2400 );
-	}
-	function play( from ) {
-		stop();
-		paused = false;
-		set( from );
-		playing = true;
-		label();
-		tick();
-	}
-
-	steps.forEach( function ( li ) {
-		function go() {
-			var n = parseInt( li.getAttribute( 'data-step' ), 10 );
-			stop();
-			paused = false;
-			if ( ! reduce ) {
-				set( 0 );
-				void stage.offsetWidth;
-			}
-			set( n );
-			label();
-		}
-		li.addEventListener( 'click', go );
-	} );
-
 	if ( reduce ) {
 		return;
 	}
-	set( 1 );
-	if ( playBtn ) {
-		playBtn.hidden = false;
-		label();
-		playBtn.addEventListener( 'click', function () {
-			if ( playing ) {
-				stop();
-				paused = true;
-				label();
-			} else if ( paused ) {
-				paused = false;
-				playing = true;
-				label();
-				tick();
-			} else {
-				play( 1 );
+	function line() {
+		var r = stage.getBoundingClientRect();
+		return window.innerWidth < 900 ? r.bottom + 56 : window.innerHeight * 0.4;
+	}
+	function update() {
+		ticking = false;
+		var y = line(), n = 1;
+		steps.forEach( function ( li, i ) {
+			if ( li.getBoundingClientRect().top <= y ) {
+				n = i + 1;
 			}
 		} );
+		if ( n !== state ) {
+			set( n );
+		}
 	}
-	if ( 'IntersectionObserver' in window ) {
-		var io = new IntersectionObserver( function ( entries ) {
-			if ( entries[ 0 ].isIntersecting ) {
-				io.disconnect();
-				play( 1 );
-			}
-		}, { threshold: 0.5 } );
-		io.observe( stage );
-	} else {
-		set( 5 );
+	function onScroll() {
+		if ( ! ticking ) {
+			ticking = true;
+			window.requestAnimationFrame( update );
+		}
 	}
+	steps.forEach( function ( li ) {
+		li.addEventListener( 'click', function () {
+			var n = parseInt( li.getAttribute( 'data-step' ), 10 );
+			set( 0 );
+			void stage.offsetWidth;
+			set( n );
+		} );
+	} );
+	window.addEventListener( 'scroll', onScroll, { passive: true } );
+	window.addEventListener( 'resize', onScroll );
+	set( 1 );
+	update();
 } )();
 
 /* FAQ: weiches Auf- und Zuklappen (Höhe per Web Animations API, unterbrechbar). */
