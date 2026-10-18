@@ -855,7 +855,7 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 .ca-row { animation: ha-in .6s cubic-bezier(.23, 1, .32, 1) var(--d) both; }
 .ca-tool { transform-box: fill-box; transform-origin: 30% 100%; animation: ca-tool .9s cubic-bezier(.23, 1, .32, 1) .3s both; }
 @keyframes ca-tool { from { opacity: 0; transform: translateY(-18px) rotate(-6deg); } to { opacity: 1; transform: none; } }
-@media (max-width: 1099px) { .hero--care .hero__art { max-width: 340px; } }
+@media (max-width: 1099px) { .entry-content > .hero--care .hero__art { max-width: calc(340px + var(--gutter) * 2); } }
 @media (prefers-reduced-motion: reduce) {
 	.ca-win, .ca-row, .ca-tool { animation-name: ca-fade; }
 }
