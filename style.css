@@ -563,16 +563,16 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 @media (max-width: 781px) {
 	.hero--arcs::before { display: none; }
 	.hero--arcs .wp-block-column:last-child { flex-basis: 100% !important; }
-	.hero--arcs figure.wp-block-image { position: relative; width: min(62%, 260px); aspect-ratio: 1; margin: 12px auto 28px !important; }
-	.hero--arcs figure.wp-block-image img { width: 100% !important; height: 100% !important; aspect-ratio: 1; object-fit: cover; object-position: 50% 22%; border-radius: 50% !important; display: block; }
-	.hero--arcs figure.wp-block-image::before,
-	.hero--arcs figure.wp-block-image::after {
+	.hero--arcs figure.wp-block-image:not(.shot) { position: relative; width: min(62%, 260px); aspect-ratio: 1; margin: 12px auto 28px !important; }
+	.hero--arcs figure.wp-block-image:not(.shot) img { width: 100% !important; height: 100% !important; aspect-ratio: 1; object-fit: cover; object-position: 50% 22%; border-radius: 50% !important; display: block; }
+	.hero--arcs figure.wp-block-image:not(.shot)::before,
+	.hero--arcs figure.wp-block-image:not(.shot)::after {
 		content: ""; position: absolute; border-radius: 50%; pointer-events: none;
 		border: 1px solid transparent; border-top-color: var(--accent); border-right-color: var(--accent);
 		opacity: .45;
 	}
-	.hero--arcs figure.wp-block-image::before { inset: -14px; transform: rotate(-20deg); }
-	.hero--arcs figure.wp-block-image::after { inset: -30px; transform: rotate(35deg); opacity: .25; }
+	.hero--arcs figure.wp-block-image:not(.shot)::before { inset: -14px; transform: rotate(-20deg); }
+	.hero--arcs figure.wp-block-image:not(.shot)::after { inset: -30px; transform: rotate(35deg); opacity: .25; }
 }
 
 /* ---------- Ablauf: Schritte + Browser-Animation ---------- */
@@ -659,3 +659,15 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 .faq__item[open]:not(.is-closing) summary::after { transform: rotate(45deg); }
 .faq__a { padding: 0 0 18px; max-width: 760px; }
 .faq__a p { margin: 0 0 .7em; }
+
+/* Hero WordPress-Seite: zwei Projekt-Screenshots in Browserfenstern */
+.hero-shots { position: relative; padding-bottom: 26%; }
+.hero-shots .shot { margin: 0; background: #fff; border: 1px solid var(--line-strong); border-radius: var(--radius); overflow: hidden; box-shadow: 0 18px 40px -20px rgba(20, 18, 16, .4); }
+.hero-shots .shot::before { content: ""; display: block; height: 24px; border-bottom: 1px solid var(--line); background: radial-gradient(circle at 12px 12px, var(--accent) 3.5px, transparent 4px), radial-gradient(circle at 26px 12px, var(--line-strong) 3.5px, transparent 4px), radial-gradient(circle at 40px 12px, var(--line-strong) 3.5px, transparent 4px), #fff; }
+.hero-shots .shot img { display: block; width: 100%; height: auto; }
+.hero-shots .shot--a { width: 84%; }
+.hero-shots .shot--b { position: absolute; right: 0; bottom: 0; width: 72%; }
+@keyframes shot-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.hero-shots .shot--a { animation: shot-in .7s cubic-bezier(.23, 1, .32, 1) .1s both; }
+.hero-shots .shot--b { animation: shot-in .7s cubic-bezier(.23, 1, .32, 1) .3s both; }
+@media (max-width: 781px) { .hero-shots { margin-top: 12px; } }
