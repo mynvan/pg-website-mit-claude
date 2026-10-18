@@ -683,3 +683,25 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 .entry-content > .hero > .wp-block-group__inner-container > p.hero__credit { position: absolute; right: var(--gutter); left: auto; bottom: 10px; margin: 0; width: auto; max-width: none; font-size: .75rem; color: var(--muted); z-index: 2; }
 @media (max-width: 899px) { .hero--sketch[style*="background-image"] { padding-bottom: calc(58vw + 32px); } }
 .hero .hero__credit a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+
+/* ---------- Besucherweg (Anforderungen) ---------- */
+.journey__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 28px; position: relative; }
+.journey__step { position: relative; padding-left: 36px; display: flex; flex-direction: column; gap: 4px; }
+.journey__dot { position: absolute; left: 0; top: .35em; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); }
+.journey__step strong { font-family: var(--serif); font-size: 1.25rem; font-weight: 400; color: var(--ink); line-height: 1.25; }
+.journey__step span:not(.journey__dot) { font-size: .9375rem; color: var(--muted); }
+.journey__list::before, .journey__list::after { content: ""; position: absolute; left: 6px; top: 12px; bottom: 12px; width: 2px; background: var(--line-strong); transform-origin: top; }
+.journey__list::after { background: var(--accent); }
+@media (min-width: 800px) {
+	.journey__list { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; }
+	.journey__step { padding: 40px 0 0; }
+	.journey__dot { top: 0; }
+	.journey__list::before, .journey__list::after { left: 0; right: 0; top: 6px; bottom: auto; width: auto; height: 2px; transform-origin: left; }
+}
+.journey.is-armed .journey__list::after { transition: transform 1.8s cubic-bezier(.23, 1, .32, 1); }
+.journey.is-armed .journey__dot { transition: transform .5s cubic-bezier(.23, 1, .32, 1) calc(.2s + var(--i) * .5s), opacity .3s cubic-bezier(.23, 1, .32, 1) calc(.2s + var(--i) * .5s); }
+.journey.is-armed .journey__step strong, .journey.is-armed .journey__step span:not(.journey__dot) { transition: opacity .6s cubic-bezier(.23, 1, .32, 1) calc(.3s + var(--i) * .5s), translate .6s cubic-bezier(.23, 1, .32, 1) calc(.3s + var(--i) * .5s); }
+.journey.is-armed:not(.is-visible) .journey__list::after { transform: scale(0, 1); }
+@media (max-width: 799px) { .journey.is-armed:not(.is-visible) .journey__list::after { transform: scale(1, 0); } }
+.journey.is-armed:not(.is-visible) .journey__dot { transform: scale(0); opacity: 0; }
+.journey.is-armed:not(.is-visible) .journey__step strong, .journey.is-armed:not(.is-visible) .journey__step span:not(.journey__dot) { opacity: 0; translate: 0 8px; }

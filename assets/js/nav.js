@@ -16,9 +16,9 @@
 	}
 } )();
 
-/* Hub-Grafik: wird eingeblendet und gezeichnet, sobald sie im Bild erscheint. */
+/* Hub-Grafik und Besucherweg: werden eingeblendet und gezeichnet, sobald sie im Bild erscheinen. */
 ( function () {
-	var hubs = document.querySelectorAll( '.hub' );
+	var hubs = document.querySelectorAll( '.hub, .journey' );
 	if ( ! hubs.length ) {
 		return;
 	}
