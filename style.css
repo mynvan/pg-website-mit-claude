@@ -834,3 +834,9 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 .hero__art-cap::before{content:"";display:inline-block;width:20px;height:1px;margin-right:10px;vertical-align:middle;background:var(--accent)}
 @media (min-width:1100px){.entry-content .hero--art .hero__art{translate:0 -54%}}
 .hero__art-cap{--hgo:1}
+
+/* Betreuung-Foto (Relaunch) */
+.care-photo { margin: 0; }
+.care-photo img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--radius); box-shadow: 0 18px 40px -22px rgba(20, 18, 16, .45); }
+.care-photo figcaption { margin: 10px 0 0; font-size: .8125rem; color: var(--muted); text-align: right; }
+.care-photo figcaption a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
