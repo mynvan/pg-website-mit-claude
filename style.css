@@ -751,3 +751,14 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 .ref-mini .ref-row__text p{margin:0}
 @media (min-width:700px){.ref-mini{grid-template-columns:220px minmax(0,1fr);gap:32px}}
 .reftabs .ref-row__meta,.ref-mini .ref-row__meta{font-size:.8125rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-text);font-weight:600}
+.ref-mini h3 a{color:inherit;text-decoration:none}
+.ref-mini .ref-mini__more{font-weight:600}
+.ref-mini .ref-mini__more a{text-decoration:none}
+.ref-mini figure.shot a{display:block;overflow:hidden}
+.ref-mini figure.shot img{transition:transform .5s cubic-bezier(.23,1,.32,1)}
+@media (hover:hover){
+.entry-content .ref-mini figure.shot{transition:transform .35s cubic-bezier(.23,1,.32,1),box-shadow .35s cubic-bezier(.23,1,.32,1)}
+.ref-mini:hover figure.shot{transform:translateY(-3px)}
+.ref-mini:hover figure.shot img{transform:scale(1.03)}
+.ref-mini h3 a:hover,.ref-mini .ref-mini__more a:hover{color:var(--accent-text)}
+}
