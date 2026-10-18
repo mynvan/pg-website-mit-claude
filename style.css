@@ -725,3 +725,28 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 .ref-row.is-armed:not(.is-visible) { opacity: 0; translate: 0 14px; }
 
 .entry-content .ref-row figure.shot { max-width: 480px; }
+
+/* Referenzen: Vergleichsvarianten */
+.ref-variant{margin:72px 0 0!important;padding-top:14px;border-top:1px dashed var(--line-strong);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.reftabs{margin-top:24px}
+.reftabs__bar{display:inline-flex;gap:4px;padding:4px;background:var(--sand,#efe9de);border-radius:999px}
+.reftabs__bar button{font:inherit;font-size:.9375rem;font-weight:600;padding:8px 20px;border:0;border-radius:999px;background:transparent;color:var(--ink,#222);cursor:pointer;transition:background-color .25s,color .25s}
+.reftabs__bar button[aria-selected="true"]{background:var(--accent,#D95C09);color:#fff}
+.reftabs__bar button:focus-visible{outline:2px solid var(--accent,#D95C09);outline-offset:2px}
+.reftabs__panel{display:grid;gap:24px 48px;align-items:center;margin-top:28px}
+.reftabs__panel[hidden]{display:none}
+.reftabs__panel.is-active{animation:reftab-in .4s cubic-bezier(.23,1,.32,1)}
+@keyframes reftab-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.reftabs__text{display:flex;flex-direction:column;gap:14px}
+.reftabs__text h3{font-family:Georgia,serif;font-size:1.5rem;margin:0}
+.reftabs__text p{margin:0}
+.entry-content .reftabs figure.shot{margin:0;max-width:none}
+@media (min-width:900px){.reftabs__panel{grid-template-columns:minmax(0,480px) minmax(0,1fr)}}
+.ref-minis{display:grid;gap:0;margin-top:24px}
+.ref-mini{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:start;padding:24px 0;border-top:1px solid var(--line-strong)}
+.ref-mini:last-child{border-bottom:1px solid var(--line-strong)}
+.ref-mini .wp-block-group__inner-container{display:contents}
+.entry-content .ref-mini figure.shot{margin:0;max-width:none}
+.ref-mini .ref-row__text h3{font-size:1.25rem;margin:0}
+.ref-mini .ref-row__text p{margin:0}
+@media (min-width:700px){.ref-mini{grid-template-columns:220px minmax(0,1fr);gap:32px}}

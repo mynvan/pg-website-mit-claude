@@ -217,3 +217,29 @@
 		} );
 	} );
 } )();
+
+/* Referenzen: Umschalter */
+( function () {
+	document.querySelectorAll( '[data-reftabs]' ).forEach( function ( root ) {
+		var tabs = Array.prototype.slice.call( root.querySelectorAll( '[role="tab"]' ) );
+		var panels = Array.prototype.slice.call( root.querySelectorAll( '[role="tabpanel"]' ) );
+		function show( i, focus ) {
+			tabs.forEach( function ( t, j ) {
+				t.setAttribute( 'aria-selected', j === i ? 'true' : 'false' );
+				t.tabIndex = j === i ? 0 : -1;
+			} );
+			panels.forEach( function ( p, j ) {
+				p.hidden = j !== i;
+				p.classList.toggle( 'is-active', j === i );
+			} );
+			if ( focus ) { tabs[ i ].focus(); }
+		}
+		tabs.forEach( function ( t, i ) {
+			t.addEventListener( 'click', function () { show( i ); } );
+			t.addEventListener( 'keydown', function ( e ) {
+				var n = e.key === 'ArrowRight' ? ( i + 1 ) % tabs.length : e.key === 'ArrowLeft' ? ( i + tabs.length - 1 ) % tabs.length : -1;
+				if ( n > -1 ) { e.preventDefault(); show( n, true ); }
+			} );
+		} );
+	} );
+} )();
