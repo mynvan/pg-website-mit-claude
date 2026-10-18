@@ -821,3 +821,5 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 .process--rl .process__stage[data-state="5"] .pf__row:nth-child(2) b{transition-delay:.6s}
 .process--rl .process__stage[data-state="5"] .pf__row:nth-child(3) b{transition-delay:.9s}
 .process--rl .process__stage[data-state="0"] .pf__row b{transition:none}
+.entry-content > .block-section > :is(.grid-2, .grid-3, .grid-4, .scope) + *,
+.entry-content > .block-section > .wp-block-group__inner-container > :is(.grid-2, .grid-3, .grid-4, .scope) + * { margin-top: 40px; }
