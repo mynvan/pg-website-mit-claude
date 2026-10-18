@@ -558,3 +558,19 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 /* Über mich: Kreisbögen werden beim Laden eingezeichnet */
 :root { --deco-arcs-live: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1942' height='809' viewBox='0 0 1942 809' fill='none'%3E%3Cstyle%3E .arc%7Bstroke-dasharray:1;stroke-dashoffset:1;animation:draw 3.6s cubic-bezier(.23,1,.32,1) forwards%7D .a2%7Banimation-delay:.5s%7D.a3%7Banimation-delay:1s%7D .arcs%7Banimation:breathe 10s ease-in-out 3.2s 2%7D %40keyframes draw%7Bto%7Bstroke-dashoffset:0%7D%7D %40keyframes breathe%7B0%25,100%25%7Bopacity:.22%7D50%25%7Bopacity:.28%7D%7D %40media (prefers-reduced-motion:reduce)%7B.arc%7Banimation:none;stroke-dashoffset:0%7D.arcs%7Banimation:none%7D%7D %3C/style%3E%3Cg class='arcs' stroke='%23EF6500' stroke-width='1' opacity='0.22'%3E%3Cpath class='arc' pathLength='1' d='M 994 286 A 340 330 0 0 1 1480 43'/%3E%3Cpath class='arc a2' pathLength='1' d='M 1490 47 A 340 330 0 0 1 1669 397'/%3E%3Cpath class='arc a3' pathLength='1' d='M 1460 107 A 274 266 0 0 1 1810 571'/%3E%3C/g%3E%3C/svg%3E"); }
 .hero--arcs::before { background-image: var(--deco-arcs-live); }
+
+/* Über mich, Handy: rundes Porträt mit Kreisbögen statt großem Foto und Bögen quer über dem Text */
+@media (max-width: 781px) {
+	.hero--arcs::before { display: none; }
+	.hero--arcs .wp-block-column:last-child { flex-basis: 100% !important; }
+	.hero--arcs figure.wp-block-image { position: relative; width: min(62%, 260px); aspect-ratio: 1; margin: 12px auto 28px; }
+	.hero--arcs figure.wp-block-image img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; border-radius: 50%; display: block; }
+	.hero--arcs figure.wp-block-image::before,
+	.hero--arcs figure.wp-block-image::after {
+		content: ""; position: absolute; border-radius: 50%; pointer-events: none;
+		border: 1px solid transparent; border-top-color: var(--accent); border-right-color: var(--accent);
+		opacity: .45;
+	}
+	.hero--arcs figure.wp-block-image::before { inset: -14px; transform: rotate(-20deg); }
+	.hero--arcs figure.wp-block-image::after { inset: -30px; transform: rotate(35deg); opacity: .25; }
+}
