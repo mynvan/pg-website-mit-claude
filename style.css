@@ -679,5 +679,6 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 
 /* Hero-Foto-Credit */
 .hero { position: relative; }
-.hero .hero__credit { position: absolute; right: var(--gutter); bottom: 10px; margin: 0; font-size: .75rem; color: var(--muted); z-index: 2; max-width: none; }
+.entry-content > .hero > p.hero__credit { position: absolute; right: var(--gutter); left: auto; bottom: 10px; margin: 0; width: auto; max-width: none; font-size: .75rem; color: var(--muted); z-index: 2; }
+@media (max-width: 899px) { .hero--sketch[style*="background-image"] { padding-bottom: calc(58vw + 32px); } }
 .hero .hero__credit a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
