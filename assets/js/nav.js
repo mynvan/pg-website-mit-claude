@@ -18,7 +18,7 @@
 
 /* Hub-Grafik und Besucherweg: werden eingeblendet und gezeichnet, sobald sie im Bild erscheinen. */
 ( function () {
-	var hubs = document.querySelectorAll( '.hub, .journey' );
+	var hubs = document.querySelectorAll( '.hub, .journey, .ref-row' );
 	if ( ! hubs.length ) {
 		return;
 	}

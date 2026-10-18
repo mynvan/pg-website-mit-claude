@@ -662,9 +662,9 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 
 /* Hero WordPress-Seite: zwei Projekt-Screenshots in Browserfenstern */
 .hero-shots { position: relative; padding-bottom: 26%; }
-.hero-shots .shot { margin: 0; background: #fff; border: 1px solid var(--line-strong); border-radius: var(--radius); overflow: hidden; box-shadow: 0 18px 40px -20px rgba(20, 18, 16, .4); }
-.hero-shots .shot::before { content: ""; display: block; height: 24px; border-bottom: 1px solid var(--line); background: radial-gradient(circle at 12px 12px, var(--accent) 3.5px, transparent 4px), radial-gradient(circle at 26px 12px, var(--line-strong) 3.5px, transparent 4px), radial-gradient(circle at 40px 12px, var(--line-strong) 3.5px, transparent 4px), #fff; }
-.hero-shots .shot img { display: block; width: 100%; height: auto; }
+.shot { margin: 0; background: #fff; border: 1px solid var(--line-strong); border-radius: var(--radius); overflow: hidden; box-shadow: 0 18px 40px -20px rgba(20, 18, 16, .4); }
+.shot::before { content: ""; display: block; height: 24px; border-bottom: 1px solid var(--line); background: radial-gradient(circle at 12px 12px, var(--accent) 3.5px, transparent 4px), radial-gradient(circle at 26px 12px, var(--line-strong) 3.5px, transparent 4px), radial-gradient(circle at 40px 12px, var(--line-strong) 3.5px, transparent 4px), #fff; }
+.shot img { display: block; width: 100%; height: auto; }
 .hero-shots .shot--a { width: 84%; }
 .hero-shots .shot--b { position: absolute; right: 0; bottom: 0; width: 72%; }
 @keyframes shot-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
@@ -705,3 +705,21 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 @media (max-width: 799px) { .journey.is-armed:not(.is-visible) .journey__list::after { transform: scale(1, 0); } }
 .journey.is-armed:not(.is-visible) .journey__dot { transform: scale(0); opacity: 0; }
 .journey.is-armed:not(.is-visible) .journey__step strong, .journey.is-armed:not(.is-visible) .journey__step span:not(.journey__dot) { opacity: 0; translate: 0 8px; }
+
+/* ---------- Referenzen: versetzte Zeilen mit Browser-Screenshot ---------- */
+.ref-row { display: grid; gap: 24px 56px; align-items: center; grid-template-columns: minmax(0, 1fr); margin-top: 48px; }
+.ref-row__text, .ref-row__text > .wp-block-group__inner-container { display: flex; flex-direction: column; gap: 14px; }
+.entry-content .ref-row__text > * { margin: 0; max-width: none; }
+.ref-row .ref-row__meta { font-size: .8125rem; letter-spacing: .06em; text-transform: uppercase; color: var(--accent-text); font-weight: 600; }
+.ref-row h3 { font-family: var(--serif); font-size: 1.5rem; line-height: 1.25; }
+.entry-content .ref-row figure.shot { margin: 0; max-width: none; transition: transform .35s cubic-bezier(.23, 1, .32, 1), box-shadow .35s cubic-bezier(.23, 1, .32, 1); }
+@media (min-width: 900px) {
+	.ref-row { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+	.ref-row--flip { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+	.ref-row--flip .ref-row__text { order: 2; }
+}
+@media (hover: hover) {
+	.entry-content .ref-row figure.shot:hover { transform: translateY(-4px); box-shadow: 0 26px 48px -22px rgba(20, 18, 16, .45); }
+}
+.ref-row.is-armed { transition: opacity .7s cubic-bezier(.23, 1, .32, 1), translate .7s cubic-bezier(.23, 1, .32, 1); }
+.ref-row.is-armed:not(.is-visible) { opacity: 0; translate: 0 14px; }
