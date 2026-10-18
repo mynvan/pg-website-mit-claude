@@ -750,3 +750,4 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 .ref-mini .ref-row__text h3{font-size:1.25rem;margin:0}
 .ref-mini .ref-row__text p{margin:0}
 @media (min-width:700px){.ref-mini{grid-template-columns:220px minmax(0,1fr);gap:32px}}
+.reftabs .ref-row__meta,.ref-mini .ref-row__meta{font-size:.8125rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-text);font-weight:600}
