@@ -92,3 +92,17 @@
 	var stamp = encodeURIComponent( '<!--' + Date.now() + '-->' );
 	root.style.setProperty( '--deco-hero', 'url("' + m[2] + stamp + '")' );
 } )();
+
+/* Hub-Grafik: Dauerbewegung pausiert, solange die Grafik nicht im Bild ist. */
+( function () {
+	var hubs = document.querySelectorAll( '.hub' );
+	if ( ! hubs.length || ! ( 'IntersectionObserver' in window ) ) {
+		return;
+	}
+	var io = new IntersectionObserver( function ( entries ) {
+		entries.forEach( function ( entry ) {
+			entry.target.classList.toggle( 'is-offscreen', ! entry.isIntersecting );
+		} );
+	} );
+	hubs.forEach( function ( hub ) { io.observe( hub ); } );
+} )();
