@@ -76,3 +76,19 @@
 		update();
 	} );
 } )();
+
+/* Hero-Overlay: SVG-Animationen starten bei jedem Seitenaufruf neu.
+   Der Browser teilt sich sonst ein bereits geladenes SVG-Bild, dessen Animation dann nicht neu beginnt. */
+( function () {
+	if ( ! document.querySelector( '.hero[style*="background-image"]' ) ) {
+		return;
+	}
+	var root = document.documentElement;
+	var v = window.getComputedStyle( root ).getPropertyValue( '--deco-hero' ).trim();
+	var m = v.match( /^url\((["']?)(.*)\1\)$/ );
+	if ( ! m ) {
+		return;
+	}
+	var stamp = encodeURIComponent( '<!--' + Date.now() + '-->' );
+	root.style.setProperty( '--deco-hero', 'url("' + m[2] + stamp + '")' );
+} )();
