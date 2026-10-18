@@ -154,7 +154,7 @@
 				paused = false;
 				label();
 			}
-		}, 2000 );
+		}, 2400 );
 	}
 	function play( from ) {
 		stop();
@@ -207,4 +207,50 @@
 	} else {
 		set( 5 );
 	}
+} )();
+
+/* FAQ: weiches Auf- und Zuklappen (Höhe per Web Animations API, unterbrechbar). */
+( function () {
+	var items = document.querySelectorAll( '.faq__item' );
+	if ( ! items.length || ! Element.prototype.animate ) {
+		return;
+	}
+	var reduce = window.matchMedia && window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
+	if ( reduce ) {
+		return;
+	}
+	var EASE = 'cubic-bezier(0.23, 1, 0.32, 1)';
+	items.forEach( function ( d ) {
+		var summary = d.querySelector( 'summary' );
+		var answer = d.querySelector( '.faq__a' );
+		var anim = null;
+		summary.addEventListener( 'click', function ( e ) {
+			e.preventDefault();
+			var start = d.offsetHeight;
+			var closing = d.open && ! d.classList.contains( 'is-closing' );
+			if ( anim ) {
+				anim.cancel();
+			}
+			d.style.overflow = 'hidden';
+			var end;
+			if ( closing ) {
+				d.classList.add( 'is-closing' );
+				end = summary.offsetHeight + ( d.offsetHeight - d.clientHeight );
+			} else {
+				d.classList.remove( 'is-closing' );
+				d.open = true;
+				end = d.offsetHeight;
+				answer.animate( { opacity: [ 0, 1 ] }, { duration: 260, easing: EASE } );
+			}
+			anim = d.animate( { height: [ start + 'px', end + 'px' ] }, { duration: 300, easing: EASE } );
+			anim.onfinish = function () {
+				if ( closing ) {
+					d.open = false;
+					d.classList.remove( 'is-closing' );
+				}
+				d.style.overflow = '';
+				anim = null;
+			};
+		} );
+	} );
 } )();
