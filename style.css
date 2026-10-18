@@ -714,8 +714,8 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 .ref-row h3 { font-family: var(--serif); font-size: 1.5rem; line-height: 1.25; }
 .entry-content .ref-row figure.shot { margin: 0; max-width: none; transition: transform .35s cubic-bezier(.23, 1, .32, 1), box-shadow .35s cubic-bezier(.23, 1, .32, 1); }
 @media (min-width: 900px) {
-	.ref-row { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
-	.ref-row--flip { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+	.ref-row { grid-template-columns: minmax(0, 1fr) minmax(0, 400px); }
+	.ref-row--flip { grid-template-columns: minmax(0, 400px) minmax(0, 1fr); }
 	.ref-row--flip .ref-row__text { order: 2; }
 }
 @media (hover: hover) {
@@ -723,3 +723,5 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 }
 .ref-row.is-armed { transition: opacity .7s cubic-bezier(.23, 1, .32, 1), translate .7s cubic-bezier(.23, 1, .32, 1); }
 .ref-row.is-armed:not(.is-visible) { opacity: 0; translate: 0 14px; }
+
+.entry-content .ref-row figure.shot { max-width: 480px; }
