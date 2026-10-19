@@ -475,3 +475,95 @@ function gebhart_contact_handle() {
 }
 add_action( 'admin_post_nopriv_gebhart_kontakt', 'gebhart_contact_handle' );
 add_action( 'admin_post_gebhart_kontakt', 'gebhart_contact_handle' );
+
+/* ---------- SEO-Titel und Meta-Beschreibung ----------
+ * Schlanke Felder für Seiten und Beiträge (Box "SEO" im Editor). Ist ein SEO-Plugin aktiv
+ * (Yoast, Rank Math, SEOPress), übernimmt das Plugin und diese Ausgabe entfällt.
+ */
+function gebhart_seo_plugin_active() {
+	return defined( 'WPSEO_VERSION' ) || class_exists( 'RankMath' ) || defined( 'SEOPRESS_VERSION' );
+}
+
+function gebhart_seo_register_meta() {
+	foreach ( array( 'page', 'post' ) as $type ) {
+		foreach ( array( '_gebhart_seo_title', '_gebhart_seo_desc' ) as $key ) {
+			register_post_meta(
+				$type,
+				$key,
+				array(
+					'type'              => 'string',
+					'single'            => true,
+					'show_in_rest'      => true,
+					'sanitize_callback' => 'sanitize_text_field',
+					'auth_callback'     => function ( $allowed, $meta_key, $post_id ) {
+						return current_user_can( 'edit_post', $post_id );
+					},
+				)
+			);
+		}
+	}
+}
+add_action( 'init', 'gebhart_seo_register_meta' );
+
+function gebhart_seo_box() {
+	if ( gebhart_seo_plugin_active() ) {
+		return;
+	}
+	add_meta_box( 'gebhart-seo', 'SEO', 'gebhart_seo_box_render', array( 'page', 'post' ), 'normal', 'default' );
+}
+add_action( 'add_meta_boxes', 'gebhart_seo_box' );
+
+function gebhart_seo_box_render( $post ) {
+	wp_nonce_field( 'gebhart_seo', 'gebhart_seo_nonce' );
+	$title = get_post_meta( $post->ID, '_gebhart_seo_title', true );
+	$desc  = get_post_meta( $post->ID, '_gebhart_seo_desc', true );
+	?>
+	<p><label for="gebhart-seo-title"><strong>SEO-Titel</strong> (leer = Seitentitel – Website-Name)</label><br>
+	<input type="text" id="gebhart-seo-title" name="gebhart_seo_title" value="<?php echo esc_attr( $title ); ?>" style="width:100%" maxlength="70"></p>
+	<p><label for="gebhart-seo-desc"><strong>Meta-Beschreibung</strong> (ca. 120–160 Zeichen)</label><br>
+	<textarea id="gebhart-seo-desc" name="gebhart_seo_desc" rows="3" style="width:100%" maxlength="320"><?php echo esc_textarea( $desc ); ?></textarea></p>
+	<?php
+}
+
+function gebhart_seo_save( $post_id ) {
+	if ( ! isset( $_POST['gebhart_seo_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['gebhart_seo_nonce'] ) ), 'gebhart_seo' ) ) {
+		return;
+	}
+	if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+	foreach ( array( 'gebhart_seo_title' => '_gebhart_seo_title', 'gebhart_seo_desc' => '_gebhart_seo_desc' ) as $field => $key ) {
+		$value = isset( $_POST[ $field ] ) ? sanitize_text_field( wp_unslash( $_POST[ $field ] ) ) : '';
+		if ( '' === $value ) {
+			delete_post_meta( $post_id, $key );
+		} else {
+			update_post_meta( $post_id, $key, $value );
+		}
+	}
+}
+add_action( 'save_post', 'gebhart_seo_save' );
+
+add_filter(
+	'pre_get_document_title',
+	function ( $title ) {
+		if ( gebhart_seo_plugin_active() || ! is_singular() ) {
+			return $title;
+		}
+		$custom = get_post_meta( get_queried_object_id(), '_gebhart_seo_title', true );
+		return '' !== $custom ? $custom : $title;
+	}
+);
+
+add_action(
+	'wp_head',
+	function () {
+		if ( gebhart_seo_plugin_active() || ! is_singular() ) {
+			return;
+		}
+		$desc = get_post_meta( get_queried_object_id(), '_gebhart_seo_desc', true );
+		if ( '' !== $desc ) {
+			echo '<meta name="description" content="' . esc_attr( $desc ) . '">' . "\n";
+		}
+	},
+	1
+);

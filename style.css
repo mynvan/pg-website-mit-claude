@@ -1127,3 +1127,6 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 	.sf__blk::after, .sf__links path, .sf__pair b { transition: none; }
 }
 .sf__l1 { gap: 0; }
+.case__role { color: var(--ink); }
+.case__role strong { font-weight: 600; }
+.entry-content .case .check-list { margin: 4px 0 0; }
