@@ -1109,9 +1109,9 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 .sf__blk--b::after { transition-delay: .7s; }
 .seoflow[data-state="3"] .sf__blk--a, .seoflow[data-state="3"] .sf__blk--b { border-color: var(--accent); }
 .seoflow[data-state="3"] .sf__blk--a::after, .seoflow[data-state="3"] .sf__blk--b::after { transform: none; }
-.sf__links { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
-.sf__links path { fill: none; stroke: var(--accent); stroke-width: 1.5; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset .7s cubic-bezier(.23, 1, .32, 1) 1s; }
-.seoflow[data-state="3"] .sf__links path { stroke-dashoffset: 0; }
+.sf__links { position: absolute; z-index: 2; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.sf__links path { fill: none; stroke: var(--accent); stroke-width: 1.5; vector-effect: non-scaling-stroke; opacity: 0; transition: opacity .6s cubic-bezier(.23, 1, .32, 1) 1s; }
+.seoflow[data-state="3"] .sf__links path { opacity: 1; }
 .sf__map { display: flex; flex-direction: column; gap: 18px; }
 .sf__pair { display: flex; align-items: center; gap: 8px; font-size: clamp(10px, 1.4vw, 13px); }
 .sf__pair em { font-style: normal; padding: 4px 9px; border: 1px solid var(--line-strong); background: var(--bg); white-space: nowrap; color: var(--ink); }
