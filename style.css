@@ -1003,7 +1003,8 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 .sub-toggle { display: none; }
 @media (max-width: 899px) {
 	.site-header__nav .has-sub-toggle { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
-	.site-header__nav .has-sub-toggle > .sub-menu { grid-column: 1 / -1; display: none; }
+	.site-header__nav .has-sub-toggle > .sub-menu { grid-column: 1 / -1; }
+	.site-header__nav .has-sub-toggle:not(.is-sub-open) > .sub-menu { display: none; }
 	.site-header__nav .has-sub-toggle.is-sub-open > .sub-menu { display: flex; }
 	.sub-toggle {
 		display: inline-flex; align-items: center; justify-content: center;
