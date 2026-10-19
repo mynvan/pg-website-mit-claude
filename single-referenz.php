@@ -84,25 +84,39 @@ while ( have_posts() ) :
 		</div>
 
 		<?php
-		$next = get_next_post();
-		if ( ! $next ) {
-			$first = get_posts(
-				array(
-					'post_type'      => 'referenz',
-					'posts_per_page' => 1,
-					'post__not_in'   => array( get_the_ID() ),
-					'orderby'        => 'date',
-					'order'          => 'DESC',
-				)
-			);
-			$next  = ! empty( $first ) ? $first[0] : null;
-		}
-		if ( $next ) :
+		// Vorherige/nächste Referenz in derselben Reihenfolge wie die Übersicht.
+		$ref_ids = get_posts(
+			array(
+				'post_type'      => 'referenz',
+				'post_status'    => 'publish',
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+				'orderby'        => array(
+					'menu_order' => 'ASC',
+					'date'       => 'DESC',
+				),
+				'no_found_rows'  => true,
+			)
+		);
+		$pos  = array_search( get_the_ID(), $ref_ids, true );
+		$prev = ( false !== $pos && $pos > 0 ) ? $ref_ids[ $pos - 1 ] : 0;
+		$next = ( false !== $pos && $pos < count( $ref_ids ) - 1 ) ? $ref_ids[ $pos + 1 ] : 0;
+		if ( $prev || $next ) :
 			?>
-			<a class="next-link" href="<?php echo esc_url( get_permalink( $next ) ); ?>" style="margin-top:56px">
-				<span class="meta-label">Nächste Referenz</span>
-				<strong><?php echo esc_html( get_the_title( $next ) ); ?> →</strong>
-			</a>
+			<nav class="ref-pager" aria-label="Weitere Referenzen">
+				<?php if ( $prev ) : ?>
+					<a class="ref-pager__link ref-pager__link--prev" href="<?php echo esc_url( get_permalink( $prev ) ); ?>" rel="prev">
+						<span class="meta-label">← Vorherige Referenz</span>
+						<strong><?php echo esc_html( get_the_title( $prev ) ); ?></strong>
+					</a>
+				<?php endif; ?>
+				<?php if ( $next ) : ?>
+					<a class="ref-pager__link ref-pager__link--next" href="<?php echo esc_url( get_permalink( $next ) ); ?>" rel="next">
+						<span class="meta-label">Nächste Referenz →</span>
+						<strong><?php echo esc_html( get_the_title( $next ) ); ?></strong>
+					</a>
+				<?php endif; ?>
+			</nav>
 		<?php endif; ?>
 	</div>
 

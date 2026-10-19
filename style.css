@@ -1145,3 +1145,13 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 	.ref-row--archive:hover .ref-row__media .shot { transform: translateY(-4px); box-shadow: 0 26px 48px -22px rgba(20, 18, 16, .45); }
 }
 .single-ref__media .shot .single-ref__image { border-radius: 0; aspect-ratio: auto; height: auto; }
+
+/* Referenz: vorherige / nächste */
+.ref-pager { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 56px; border-top: 1px solid var(--line); padding-top: 32px; }
+.ref-pager__link { display: flex; flex-direction: column; gap: 6px; text-decoration: none; }
+.ref-pager__link strong { font-family: var(--serif); font-weight: 400; font-size: clamp(22px, 2.6vw, 28px); line-height: 1.2; color: var(--ink); transition: color .2s ease; }
+.ref-pager__link:hover strong { color: var(--accent-hover); }
+@media (min-width: 700px) {
+	.ref-pager { grid-template-columns: 1fr 1fr; gap: 48px; }
+	.ref-pager__link--next { grid-column: 2; text-align: right; align-items: flex-end; }
+}
