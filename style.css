@@ -1064,16 +1064,23 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 
 /* Zusammenarbeit: Modelle + Abgrenzung */
 .item__tag { margin: 0; font-size: .8125rem; letter-spacing: .06em; text-transform: uppercase; color: var(--accent-text); font-weight: 600; }
-.delimit { max-width: 860px; padding: 22px 24px; background: var(--bg); border-left: 3px solid var(--accent); display: flex; flex-direction: column; gap: 12px; }
-.entry-content .delimit > *, .entry-content .delimit > .wp-block-group__inner-container > * { margin: 0; }
-.delimit > .wp-block-group__inner-container { display: flex; flex-direction: column; gap: 12px; }
+.delimit, .case { position: relative; display: flex; flex-direction: column; }
+.entry-content .delimit > *, .entry-content .delimit > .wp-block-group__inner-container > *,
+.entry-content .case > *, .entry-content .case > .wp-block-group__inner-container > * { position: relative; z-index: 1; margin: 0; }
+/* Die Inhaltsbreite kommt vom Theme-Raster (Innenabstand = Gutter); die Fläche/Linie sitzt als Pseudo-Element darin. */
+.entry-content > .wp-block-group > .delimit,
+.entry-content > .wp-block-group > .wp-block-group__inner-container > .delimit { max-width: calc(860px + var(--gutter) * 2); padding: 22px calc(var(--gutter) + 24px); gap: 12px; margin-top: 40px; }
+.delimit::before { content: ""; position: absolute; inset: 0 var(--gutter); background: var(--bg); border-left: 3px solid var(--accent); }
 .delimit h3 { font-size: clamp(19px, 2vw, 22px); }
+@media (max-width: 600px) {
+	.entry-content > .wp-block-group > .delimit,
+	.entry-content > .wp-block-group > .wp-block-group__inner-container > .delimit { padding-inline: calc(var(--gutter) + 18px); }
+}
 
 /* Praxisbeispiel: kompakter redaktioneller Beleg */
-.case { max-width: 760px; border-top: 1px solid var(--ink); padding-top: 20px; display: flex; flex-direction: column; gap: 14px; }
-.case > .wp-block-group__inner-container { display: flex; flex-direction: column; gap: 14px; }
-.entry-content .case > *, .entry-content .case > .wp-block-group__inner-container > * { margin: 0; }
-.entry-content > .block-section > .case, .entry-content > .block-section > .wp-block-group__inner-container > .case { margin-top: 28px; }
+.entry-content > .wp-block-group > .case,
+.entry-content > .wp-block-group > .wp-block-group__inner-container > .case { max-width: calc(760px + var(--gutter) * 2); padding-top: 20px; gap: 14px; margin-top: 28px; }
+.case::before { content: ""; position: absolute; top: 0; left: var(--gutter); right: var(--gutter); height: 1px; background: var(--ink); }
 
 /* Ablauf: Grafik mobil vor der Schrittliste */
 @media (max-width: 999px) { .scope--viz-first .scope__viz { order: -1; } }
