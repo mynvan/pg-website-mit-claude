@@ -240,8 +240,8 @@ html { scroll-padding-top: 96px; }
 	.hero[style*="background-image"] { background-position: right bottom !important; background-size: 130% auto !important; padding-bottom: clamp(160px, 44vw, 340px); }
 }
 @media (min-width: 900px) and (max-width: 1199px) {
-	.hero[style*="background-image"] { background-position: right bottom !important; background-size: 78% auto !important; padding-bottom: clamp(300px, 36vw, 420px); }
-	.hero[style*="background-image"]::before { background-position: right bottom; background-size: 78% auto; }
+	.hero[style*="background-image"] { background-position: center bottom !important; background-size: 100% auto !important; padding-bottom: clamp(320px, 40vw, 470px); }
+	.hero[style*="background-image"]::before { background-position: center bottom; background-size: 100% auto; }
 }
 .hero .hero__location { color: var(--accent-text); font-weight: 600; }
 .block-section { padding-block: clamp(40px, 6vw, 72px); }
