@@ -458,3 +458,35 @@
 	input.addEventListener( 'change', sync );
 	sync();
 } )();
+
+/* Mobiles Menü: eigener Pfeil-Button für Untermenüs, der Elternlink führt weiter zur Übersicht. */
+( function () {
+	var items = document.querySelectorAll( '.site-header__nav .menu-item-has-children' );
+	items.forEach( function ( li, i ) {
+		var link = li.querySelector( ':scope > a' );
+		var sub = li.querySelector( ':scope > .sub-menu' );
+		if ( ! link || ! sub ) {
+			return;
+		}
+		if ( ! sub.id ) {
+			sub.id = 'sub-menu-' + ( i + 1 );
+		}
+		var btn = document.createElement( 'button' );
+		btn.type = 'button';
+		btn.className = 'sub-toggle';
+		btn.setAttribute( 'aria-controls', sub.id );
+		btn.setAttribute( 'aria-label', 'Untermenü ' + link.textContent.trim() + ' öffnen' );
+		btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+		function set( open ) {
+			li.classList.toggle( 'is-sub-open', open );
+			btn.setAttribute( 'aria-expanded', open ? 'true' : 'false' );
+			btn.setAttribute( 'aria-label', 'Untermenü ' + link.textContent.trim() + ( open ? ' schließen' : ' öffnen' ) );
+		}
+		btn.addEventListener( 'click', function () {
+			set( ! li.classList.contains( 'is-sub-open' ) );
+		} );
+		link.insertAdjacentElement( 'afterend', btn );
+		li.classList.add( 'has-sub-toggle' );
+		set( li.classList.contains( 'current-menu-ancestor' ) || li.classList.contains( 'current-menu-parent' ) );
+	} );
+} )();

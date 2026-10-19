@@ -982,3 +982,37 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 .plan .check-list li.plan__key { margin: 2px 0 10px; padding: 12px 14px 12px 40px; background: #fff; border-left: 3px solid var(--accent); color: var(--ink); }
 .plan .check-list li.plan__key::before { left: 16px; top: calc(12px + .5em); }
 .plan .check-list li.plan__key strong { font-weight: 600; }
+
+/* Leistungsübersicht: kompakter Einstieg, drei Kernleistungen, Abschluss zweispaltig */
+.hero--overview { padding-bottom: 0; }
+.entry-content > .services { padding-top: clamp(48px, 6vw, 64px); }
+.entry-content > .services > .grid-3,
+.entry-content > .services > .wp-block-group__inner-container > .grid-3 { margin-top: 0; }
+.services .grid-3 { gap: 32px 40px; }
+.entry-content .services .item h2 { font-size: clamp(22px, 2.4vw, 26px); }
+.entry-content .item > .item__link { margin-top: auto; padding-top: 6px; }
+.band-split { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
+.band-split__text { display: flex; flex-direction: column; gap: 16px; max-width: 640px; }
+.entry-content .band-split h2, .entry-content .band-split p, .entry-content .band-split .wp-block-buttons { margin: 0; }
+@media (min-width: 800px) {
+	.band-split { flex-direction: row; align-items: center; justify-content: space-between; gap: 48px; }
+	.band-split .wp-block-buttons { flex: 0 0 auto; }
+}
+
+/* Mobiles Menü: "Leistungen" bleibt ein Link, der Pfeil daneben klappt das Untermenü auf */
+.sub-toggle { display: none; }
+@media (max-width: 899px) {
+	.site-header__nav .has-sub-toggle { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+	.site-header__nav .has-sub-toggle > .sub-menu { grid-column: 1 / -1; display: none; }
+	.site-header__nav .has-sub-toggle.is-sub-open > .sub-menu { display: flex; }
+	.sub-toggle {
+		display: inline-flex; align-items: center; justify-content: center;
+		width: 44px; height: 44px; margin-right: -10px;
+		background: transparent; border: 0; border-radius: var(--radius);
+		color: var(--ink); font: inherit; cursor: pointer;
+		-webkit-tap-highlight-color: transparent;
+	}
+	.sub-toggle svg { transition: transform .2s cubic-bezier(0.23, 1, 0.32, 1); }
+	.is-sub-open > .sub-toggle svg { transform: rotate(180deg); }
+	.sub-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+}
