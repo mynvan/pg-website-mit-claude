@@ -224,6 +224,57 @@ function gebhart_ref( $key, $post_id = 0 ) {
 }
 
 /**
+ * Referenz-Textfeld als HTML ausgeben.
+ * Leerzeile = neuer Absatz, Zeile mit "## " = Zwischenüberschrift,
+ * Zeilen mit "- " = Liste; "- Begriff: Text" setzt den Begriff fett.
+ */
+function gebhart_ref_format( $text ) {
+	$text = str_replace( "\r\n", "\n", trim( (string) $text ) );
+	if ( '' === $text ) {
+		return '';
+	}
+	$out = '';
+	foreach ( preg_split( "/\n\s*\n/", $text ) as $block ) {
+		$para = array();
+		$list = array();
+		$flush_para = function () use ( &$para, &$out ) {
+			if ( $para ) {
+				$out .= '<p>' . implode( '<br>', array_map( 'esc_html', $para ) ) . '</p>';
+				$para = array();
+			}
+		};
+		$flush_list = function () use ( &$list, &$out ) {
+			if ( $list ) {
+				$out .= '<ul class="check-list">' . implode( '', $list ) . '</ul>';
+				$list = array();
+			}
+		};
+		foreach ( explode( "\n", $block ) as $line ) {
+			$line = trim( $line );
+			if ( 0 === strpos( $line, '## ' ) ) {
+				$flush_para();
+				$flush_list();
+				$out .= '<h3>' . esc_html( substr( $line, 3 ) ) . '</h3>';
+			} elseif ( preg_match( '/^[-–•]\s+(.*)$/u', $line, $m ) ) {
+				$flush_para();
+				$item = $m[1];
+				if ( preg_match( '/^([^:]{2,60}):\s+(.+)$/u', $item, $kv ) ) {
+					$list[] = '<li><strong>' . esc_html( $kv[1] ) . ':</strong> ' . esc_html( $kv[2] ) . '</li>';
+				} else {
+					$list[] = '<li>' . esc_html( $item ) . '</li>';
+				}
+			} elseif ( '' !== $line ) {
+				$flush_list();
+				$para[] = $line;
+			}
+		}
+		$flush_para();
+		$flush_list();
+	}
+	return $out;
+}
+
+/**
  * Shortcode [gebhart_referenzen limit="2"]: Referenzen als Zeilen, zum Beispiel auf der Startseite.
  */
 function gebhart_referenzen_shortcode( $atts ) {

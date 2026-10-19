@@ -309,7 +309,10 @@ html { scroll-padding-top: 96px; }
 .single-ref__body { display: flex; flex-direction: column; gap: 40px; min-width: 0; }
 .single-ref__body section { display: flex; flex-direction: column; gap: 12px; max-width: 640px; }
 .single-ref__body h2 { font-size: 28px; }
-.single-ref__body p { white-space: pre-line; }
+.single-ref__body section > * { margin: 0; }
+.single-ref__body section h3 { font-family: var(--serif); font-weight: 400; font-size: 21px; color: var(--ink); margin-top: 12px; }
+.single-ref__body .check-list li:last-child { padding-bottom: 0; }
+.single-ref__image { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 6px; background: var(--placeholder); }
 @media (min-width: 900px) {
 	.single-ref { grid-template-columns: minmax(0, 1fr) 320px; column-gap: 64px; }
 	.single-ref__head, .single-ref__media, .single-ref__body { grid-column: 1; }

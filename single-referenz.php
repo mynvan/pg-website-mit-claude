@@ -38,7 +38,9 @@ while ( have_posts() ) :
 
 			<div class="single-ref__media">
 				<?php if ( has_post_thumbnail() ) : ?>
-					<?php the_post_thumbnail( 'gebhart-wide', array( 'class' => 'article__image', 'alt' => '' ) ); ?>
+					<?php the_post_thumbnail( 'gebhart-wide', array( 'class' => 'single-ref__image', 'alt' => '' ) ); ?>
+				<?php elseif ( current_user_can( 'edit_post', get_the_ID() ) ) : ?>
+					<div class="placeholder-img single-ref__image">Titelbild fehlt noch – im Backend als Beitragsbild setzen<br>(nur für dich sichtbar)</div>
 				<?php endif; ?>
 			</div>
 
@@ -67,7 +69,7 @@ while ( have_posts() ) :
 					<?php if ( '' !== $text ) : ?>
 						<section>
 							<h2><?php echo esc_html( $heading ); ?></h2>
-							<p><?php echo esc_html( $text ); ?></p>
+							<?php echo gebhart_ref_format( $text ); // phpcs:ignore WordPress.Security.EscapeOutput -- in gebhart_ref_format() escaped. ?>
 						</section>
 					<?php endif; ?>
 				<?php endforeach; ?>
