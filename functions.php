@@ -310,6 +310,17 @@ function gebhart_form_topic_keys() {
 	);
 }
 
+/* Platzhalter für "Dein Vorhaben", passend zum gewählten Thema. */
+function gebhart_form_placeholders() {
+	return array(
+		'Neue Website'        => 'Was soll deine neue Website leisten? Gibt es einen Anlass oder einen Wunschtermin?',
+		'Website-Relaunch'    => 'Was stört dich an deiner aktuellen Website? Was soll nach dem Relaunch besser werden?',
+		'Wartung & Betreuung' => 'Womit läuft deine Website heute, und wo wird sie gehostet? Was möchtest du an mich abgeben?',
+		'SEO'                 => 'Wofür möchtest du bei Google besser gefunden werden? In welcher Region sind deine Kunden?',
+		'Etwas anderes'       => 'Beschreib kurz, worum es geht – ich melde mich mit einer ersten Einschätzung.',
+	);
+}
+
 function gebhart_form_packages() {
 	return array(
 		''          => 'Noch offen',
@@ -329,6 +340,8 @@ function gebhart_contact_form() {
 	$pre_host  = ! empty( $_GET['hosting'] );
 	// phpcs:enable
 	$care_open = 'Wartung & Betreuung' === $pre_topic;
+	$holders   = gebhart_form_placeholders();
+	$holder    = $holders[ $pre_topic ? $pre_topic : 'Neue Website' ];
 	ob_start();
 
 	if ( 'ok' === $status ) {
@@ -387,7 +400,7 @@ function gebhart_contact_form() {
 		</div>
 		<div class="gebhart-form__row">
 			<label for="gf-msg">Dein Vorhaben *</label>
-			<textarea id="gf-msg" name="ct_msg" required rows="6" maxlength="4000" placeholder="Was soll deine Website künftig leisten? Was ist der Anlass?"></textarea>
+			<textarea id="gf-msg" name="ct_msg" required rows="6" maxlength="4000" placeholder="<?php echo esc_attr( $holder ); ?>" data-placeholders="<?php echo esc_attr( wp_json_encode( $holders ) ); ?>"></textarea>
 		</div>
 		<div class="gebhart-form__row gebhart-form__check">
 			<label>

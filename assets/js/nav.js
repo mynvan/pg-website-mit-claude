@@ -424,8 +424,14 @@
 	if ( ! topic || ! care ) {
 		return;
 	}
+	var msg = document.getElementById( 'gf-msg' );
+	var holders = {};
+	try { holders = JSON.parse( ( msg && msg.getAttribute( 'data-placeholders' ) ) || '{}' ); } catch ( e ) {}
 	function sync() {
 		care.hidden = topic.value !== 'Wartung & Betreuung';
+		if ( msg && holders[ topic.value ] ) {
+			msg.placeholder = holders[ topic.value ];
+		}
 	}
 	topic.addEventListener( 'change', sync );
 	sync();
