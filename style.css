@@ -1017,3 +1017,7 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 	.is-sub-open > .sub-toggle svg { transform: rotate(180deg); }
 	.sub-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 }
+
+/* Rasterspalten: Link "Mehr über …" unten bündig, auch mit WordPress-Innencontainer */
+.item > .wp-block-group__inner-container { flex: 1 1 auto; }
+.entry-content .item .item__link { margin-top: auto; padding-top: 6px; }
