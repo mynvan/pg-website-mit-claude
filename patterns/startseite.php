@@ -45,7 +45,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Daraus entwickeln wir eine passende Struktur, eine klare Gestaltung und die nötigen Funktionen. Ob neuer Auftritt oder bestehende Website: Ich kläre mit dir, was sinnvoll ist, setze es um und begleite den Betrieb auf Wunsch langfristig – als Webdesigner aus Friedberg bei Augsburg, für Unternehmen in der Region und darüber hinaus.</p>
+<p>Daraus entwickeln wir eine passende Struktur, eine klare Gestaltung und die nötigen Funktionen. Ob neuer Auftritt oder bestehende Website: Ich kläre mit dir, was sinnvoll ist, setze es um und begleite den Betrieb auf Wunsch langfristig.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:group {"className":"grid-4"} -->
@@ -321,7 +321,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Bei mir weißt du, mit wem du arbeitest: Ich bin dein persönlicher Ansprechpartner und bleibe für deine Website verantwortlich – von der ersten Abstimmung bis zum laufenden Betrieb. Ich arbeite von Friedberg bei Augsburg aus, mit Kunden aus der Region und darüber hinaus.</p>
+<p>Bei mir weißt du, mit wem du arbeitest: Ich bin dein persönlicher Ansprechpartner und bleibe für deine Website verantwortlich – von der ersten Abstimmung bis zum laufenden Betrieb.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:list -->

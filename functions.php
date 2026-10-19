@@ -608,10 +608,19 @@ add_filter(
 add_action(
 	'wp_head',
 	function () {
-		if ( gebhart_seo_plugin_active() || ! is_singular() ) {
+		if ( gebhart_seo_plugin_active() ) {
 			return;
 		}
-		$desc = get_post_meta( get_queried_object_id(), '_gebhart_seo_desc', true );
+		$desc = '';
+		if ( is_home() && get_option( 'page_for_posts' ) ) {
+			$desc = get_post_meta( (int) get_option( 'page_for_posts' ), '_gebhart_seo_desc', true );
+		} elseif ( is_post_type_archive( 'referenz' ) ) {
+			$desc = 'Referenzen von Philipp Gebhart: WordPress-Websites, Relaunches, Betreuung und SEO für Unternehmen in Friedberg, Augsburg und Umgebung – mit Ausgangslage, Vorgehen und Ergebnis.';
+		} elseif ( is_singular( 'referenz' ) ) {
+			$desc = has_excerpt() ? wp_strip_all_tags( get_the_excerpt() ) : '';
+		} elseif ( is_singular() ) {
+			$desc = get_post_meta( get_queried_object_id(), '_gebhart_seo_desc', true );
+		}
 		if ( '' !== $desc ) {
 			echo '<meta name="description" content="' . esc_attr( $desc ) . '">' . "\n";
 		}
