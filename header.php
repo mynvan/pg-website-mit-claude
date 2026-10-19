@@ -25,8 +25,8 @@
 			<?php endif; ?>
 		</a>
 
-		<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation">
-			<span>Menü</span>
+		<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" aria-label="Menü">
+			<span class="nav-toggle__bars" aria-hidden="true"><span></span><span></span><span></span></span>
 		</button>
 
 		<div class="site-header__nav" id="site-navigation">

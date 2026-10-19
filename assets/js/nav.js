@@ -5,11 +5,13 @@
 	toggle.addEventListener( 'click', function () {
 		var open = nav.classList.toggle( 'is-open' );
 		toggle.setAttribute( 'aria-expanded', open ? 'true' : 'false' );
+		toggle.setAttribute( 'aria-label', open ? 'Menü schließen' : 'Menü' );
 	} );
 	document.addEventListener( 'keydown', function ( e ) {
 		if ( e.key === 'Escape' && nav.classList.contains( 'is-open' ) ) {
 			nav.classList.remove( 'is-open' );
 			toggle.setAttribute( 'aria-expanded', 'false' );
+			toggle.setAttribute( 'aria-label', 'Menü' );
 			toggle.focus();
 		}
 	} );
