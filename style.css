@@ -964,3 +964,6 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 .entry-content .contact-portrait { margin: 0; max-width: 360px; margin-inline: auto; }
 .entry-content .contact-portrait img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: center 20%; border-radius: var(--radius); box-shadow: 0 18px 40px -22px rgba(20, 18, 16, .45); }
 @media (max-width: 781px) { .entry-content .contact-portrait { max-width: 280px; margin-inline: 0; } }
+
+/* Porträt: leichter Schatten wie auf der Wartungsseite (Startseite, Über mich) */
+.entry-content .is-portrait img { box-shadow: 0 18px 40px -22px rgba(20, 18, 16, .45); }
