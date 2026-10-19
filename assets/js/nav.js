@@ -490,3 +490,91 @@
 		set( li.classList.contains( 'current-menu-ancestor' ) || li.classList.contains( 'current-menu-parent' ) );
 	} );
 } )();
+
+/* SEO: Ablauf in vier Zuständen. Spielt einmal beim Sichtbarwerden (~11 s), bleibt dann auf 04 stehen.
+   Start/Pause und direkt anwählbare Schritte. Reduzierte Bewegung: statisch auf 04, kein Autoplay. */
+( function () {
+	document.querySelectorAll( '[data-flow]' ).forEach( function ( root ) {
+		var tabs = Array.prototype.slice.call( root.querySelectorAll( '.care__tabs button' ) );
+		var play = root.querySelector( '.care__play' );
+		var reduce = window.matchMedia && window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
+		var LAST = 4, STEP = 2800, state = LAST, timer = null;
+
+		function set( n ) {
+			state = n;
+			root.setAttribute( 'data-state', n );
+			tabs.forEach( function ( b ) { b.setAttribute( 'aria-pressed', String( parseInt( b.getAttribute( 'data-s' ), 10 ) === n ) ); } );
+		}
+		function replay( n ) {
+			root.classList.add( 'is-reset' );
+			root.setAttribute( 'data-state', '0' );
+			void root.offsetWidth;
+			root.classList.remove( 'is-reset' );
+			set( n );
+		}
+		function label() {
+			if ( play ) {
+				play.textContent = timer ? 'Pause' : ( state >= LAST ? 'Nochmal abspielen' : ( state > 1 ? 'Weiter abspielen' : 'Ablauf abspielen' ) );
+			}
+		}
+		function stop() {
+			clearTimeout( timer );
+			timer = null;
+		}
+		function run() {
+			stop();
+			timer = setTimeout( function () {
+				timer = null;
+				if ( state < LAST ) {
+					set( state + 1 );
+					if ( state < LAST ) {
+						run();
+						return;
+					}
+				}
+				label();
+			}, STEP );
+			label();
+		}
+		tabs.forEach( function ( b ) {
+			b.addEventListener( 'click', function () {
+				stop();
+				replay( parseInt( b.getAttribute( 'data-s' ), 10 ) );
+				label();
+			} );
+		} );
+		if ( reduce || ! play ) {
+			return;
+		}
+		play.hidden = false;
+		play.addEventListener( 'click', function () {
+			if ( timer ) {
+				stop();
+				label();
+				return;
+			}
+			if ( state >= LAST ) {
+				replay( 1 );
+			}
+			run();
+		} );
+		label();
+		if ( ! ( 'IntersectionObserver' in window ) ) {
+			return;
+		}
+		/* Vor dem Sichtbarwerden auf Zustand 1, dann einmal durchspielen. */
+		replay( 1 );
+		label();
+		var io = new IntersectionObserver( function ( entries ) {
+			entries.forEach( function ( entry ) {
+				if ( entry.isIntersecting ) {
+					io.disconnect();
+					if ( state === 1 && ! timer ) {
+						run();
+					}
+				}
+			} );
+		}, { threshold: 0.5 } );
+		io.observe( root );
+	} );
+} )();
