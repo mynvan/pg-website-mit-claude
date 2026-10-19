@@ -967,3 +967,18 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 
 /* Porträt: leichter Schatten wie auf der Wartungsseite (Startseite, Über mich) */
 .entry-content .is-portrait img { box-shadow: 0 18px 40px -22px rgba(20, 18, 16, .45); }
+
+/* Projektanfrage: Paketfelder (nur bei Wartung & Betreuung) */
+.gebhart-form__care { display: flex; flex-direction: column; gap: inherit; padding: 16px 18px; background: var(--panel); border-left: 3px solid var(--accent); }
+.gebhart-form__care[hidden] { display: none; }
+
+/* Wartung: Ablaufschritte als ruhiges 2×2-Raster */
+.care__ctrl { display: block; }
+.care__tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.care__tabs button { width: 100%; text-align: left; }
+.care__ctrl button.care__play { display: inline-block; margin: 8px 0 0; }
+
+/* Betreuung Plus: Änderungszeit als entscheidender Unterschied */
+.plan .check-list li.plan__key { margin: 2px 0 10px; padding: 12px 14px 12px 40px; background: #fff; border-left: 3px solid var(--accent); color: var(--ink); }
+.plan .check-list li.plan__key::before { left: 16px; top: calc(12px + .5em); }
+.plan .check-list li.plan__key strong { font-weight: 600; }

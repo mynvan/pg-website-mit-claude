@@ -416,3 +416,39 @@
 	} );
 	label();
 } )();
+
+/* Projektanfrage: Paketfelder nur bei "Wartung & Betreuung". */
+( function () {
+	var topic = document.getElementById( 'gf-topic' );
+	var care = document.querySelector( '[data-care-fields]' );
+	if ( ! topic || ! care ) {
+		return;
+	}
+	function sync() {
+		care.hidden = topic.value !== 'Wartung & Betreuung';
+	}
+	topic.addEventListener( 'change', sync );
+	sync();
+} )();
+
+/* Wartung: Paket-Buttons übernehmen die Hosting-Auswahl in die Anfrage. */
+( function () {
+	var input = document.querySelector( '[data-plans] [data-hosting]' );
+	if ( ! input ) {
+		return;
+	}
+	var links = document.querySelectorAll( '[data-plans] a[data-paket]' );
+	function sync() {
+		links.forEach( function ( a ) {
+			var url = new URL( a.href, window.location.href );
+			if ( input.checked ) {
+				url.searchParams.set( 'hosting', '1' );
+			} else {
+				url.searchParams.delete( 'hosting' );
+			}
+			a.href = url.pathname + url.search;
+		} );
+	}
+	input.addEventListener( 'change', sync );
+	sync();
+} )();

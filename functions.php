@@ -300,8 +300,35 @@ function gebhart_form_topics() {
 	return array( 'Neue Website', 'Website-Relaunch', 'Wartung & Betreuung', 'SEO', 'Etwas anderes' );
 }
 
+/* Kurzschlüssel aus Links (z. B. ?thema=wartung&paket=plus&hosting=1) für die Vorauswahl. */
+function gebhart_form_topic_keys() {
+	return array(
+		'website'  => 'Neue Website',
+		'relaunch' => 'Website-Relaunch',
+		'wartung'  => 'Wartung & Betreuung',
+		'seo'      => 'SEO',
+	);
+}
+
+function gebhart_form_packages() {
+	return array(
+		''          => 'Noch offen',
+		'betreuung' => 'Betreuung (39 € netto / Monat)',
+		'plus'      => 'Betreuung Plus (79 € netto / Monat)',
+	);
+}
+
 function gebhart_contact_form() {
 	$status = isset( $_GET['anfrage'] ) ? sanitize_key( wp_unslash( $_GET['anfrage'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
+	// phpcs:disable WordPress.Security.NonceVerification
+	$keys      = gebhart_form_topic_keys();
+	$pre_key   = isset( $_GET['thema'] ) ? sanitize_key( wp_unslash( $_GET['thema'] ) ) : '';
+	$pre_topic = isset( $keys[ $pre_key ] ) ? $keys[ $pre_key ] : '';
+	$pre_pack  = isset( $_GET['paket'] ) ? sanitize_key( wp_unslash( $_GET['paket'] ) ) : '';
+	$pre_pack  = array_key_exists( $pre_pack, gebhart_form_packages() ) ? $pre_pack : '';
+	$pre_host  = ! empty( $_GET['hosting'] );
+	// phpcs:enable
+	$care_open = 'Wartung & Betreuung' === $pre_topic;
 	ob_start();
 
 	if ( 'ok' === $status ) {
@@ -338,9 +365,25 @@ function gebhart_contact_form() {
 			<label for="gf-topic">Worum geht es?</label>
 			<select id="gf-topic" name="ct_topic">
 				<?php foreach ( gebhart_form_topics() as $topic ) : ?>
-					<option value="<?php echo esc_attr( $topic ); ?>"><?php echo esc_html( $topic ); ?></option>
+					<option value="<?php echo esc_attr( $topic ); ?>"<?php selected( $topic, $pre_topic ); ?>><?php echo esc_html( $topic ); ?></option>
 				<?php endforeach; ?>
 			</select>
+		</div>
+		<div class="gebhart-form__care" data-care-fields<?php echo $care_open ? '' : ' hidden'; ?>>
+			<div class="gebhart-form__row">
+				<label for="gf-paket">Betreuungspaket</label>
+				<select id="gf-paket" name="ct_paket">
+					<?php foreach ( gebhart_form_packages() as $key => $label ) : ?>
+						<option value="<?php echo esc_attr( $key ); ?>"<?php selected( $key, $pre_pack ); ?>><?php echo esc_html( $label ); ?></option>
+					<?php endforeach; ?>
+				</select>
+			</div>
+			<div class="gebhart-form__row gebhart-form__check">
+				<label>
+					<input type="checkbox" name="ct_hosting" value="1"<?php checked( $pre_host ); ?>>
+					<span>Hosting inklusive E-Mail dazubuchen (+15 € netto / Monat)</span>
+				</label>
+			</div>
 		</div>
 		<div class="gebhart-form__row">
 			<label for="gf-msg">Dein Vorhaben *</label>
@@ -389,7 +432,11 @@ function gebhart_contact_handle() {
 	$topic = isset( $_POST['ct_topic'] ) ? sanitize_text_field( wp_unslash( $_POST['ct_topic'] ) ) : '';
 	$msg   = isset( $_POST['ct_msg'] ) ? sanitize_textarea_field( wp_unslash( $_POST['ct_msg'] ) ) : '';
 	$priv  = ! empty( $_POST['ct_privacy'] );
+	$pack  = isset( $_POST['ct_paket'] ) ? sanitize_key( wp_unslash( $_POST['ct_paket'] ) ) : '';
+	$host  = ! empty( $_POST['ct_hosting'] );
 	// phpcs:enable
+	$packs = gebhart_form_packages();
+	$pack  = array_key_exists( $pack, $packs ) ? $pack : '';
 
 	if ( ! in_array( $topic, gebhart_form_topics(), true ) ) {
 		$topic = '';
@@ -400,6 +447,9 @@ function gebhart_contact_handle() {
 
 	$body  = 'Neue Projektanfrage über ' . home_url( '/' ) . "\n\n";
 	$body .= "Name: $name\nE-Mail: $mail\nTelefon: " . ( $tel ? $tel : '–' ) . "\nWebsite: " . ( $web ? $web : '–' ) . "\nThema: " . ( $topic ? $topic : '–' ) . "\n\n";
+	if ( 'Wartung & Betreuung' === $topic ) {
+		$body .= 'Paket: ' . $packs[ $pack ] . "\nHosting inkl. E-Mail: " . ( $host ? 'ja' : 'nein' ) . "\n\n";
+	}
 	$body .= "Vorhaben:\n$msg\n\n";
 	$body .= "Datenschutzerklärung zum Zeitpunkt der Anfrage bestätigt: ja\n";
 
