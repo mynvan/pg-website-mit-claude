@@ -359,7 +359,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Du möchtest eine neue Website, deinen bestehenden Auftritt erneuern oder die Betreuung verlässlich regeln? Beschreibe kurz dein Vorhaben und schicke mir, falls vorhanden, den Link zu deiner Website. Gemeinsam klären wir, was du brauchst und wie ich dich unterstützen kann.</p>
+<p>Du möchtest eine neue Website, deinen bestehenden Auftritt erneuern oder die Betreuung verlässlich regeln? Beschreibe kurz dein Vorhaben und schicke mir, falls vorhanden, den Link zu deiner Website. Du bekommst von mir eine erste Einschätzung, was sinnvoll ist und wie ich dich unterstützen kann.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:buttons -->
