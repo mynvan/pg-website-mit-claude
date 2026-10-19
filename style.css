@@ -1133,3 +1133,15 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 .case__role { color: var(--ink); }
 .case__role strong { font-weight: 600; }
 .entry-content .case .check-list { margin: 4px 0 0; }
+
+/* ---------- Referenzen-Übersicht (Entwurf A1): Zeilen im Wechsel ---------- */
+.ref-list .ref-row--archive { display: flex; flex-wrap: wrap; align-items: center; gap: 48px; margin-top: 0; }
+.ref-list .ref-row--archive:nth-child(even) { flex-direction: row-reverse; }
+.ref-list .ref-row--archive > * { flex: 1 1 420px; min-width: 0; }
+.ref-row__media { display: block; }
+.ref-row__media .shot { transition: transform .35s cubic-bezier(.23, 1, .32, 1), box-shadow .35s cubic-bezier(.23, 1, .32, 1); }
+.ref-shot { aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; }
+@media (hover: hover) {
+	.ref-row--archive:hover .ref-row__media .shot { transform: translateY(-4px); box-shadow: 0 26px 48px -22px rgba(20, 18, 16, .45); }
+}
+.single-ref__media .shot .single-ref__image { border-radius: 0; aspect-ratio: auto; height: auto; }

@@ -5,10 +5,10 @@
 $untertitel = gebhart_ref( 'ref_untertitel' );
 $leistungen = gebhart_ref( 'ref_leistungen' );
 ?>
-<article class="ref-row">
-	<a href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
+<article class="ref-row ref-row--archive">
+	<a class="ref-row__media" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
 		<?php if ( has_post_thumbnail() ) : ?>
-			<?php the_post_thumbnail( 'gebhart-card', array( 'class' => 'ref-image', 'alt' => '' ) ); ?>
+			<figure class="shot"><?php the_post_thumbnail( 'large', array( 'class' => 'ref-shot', 'alt' => '' ) ); ?></figure>
 		<?php else : ?>
 			<div class="placeholder-img">Titelbild fehlt noch</div>
 		<?php endif; ?>

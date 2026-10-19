@@ -38,7 +38,7 @@ while ( have_posts() ) :
 
 			<div class="single-ref__media">
 				<?php if ( has_post_thumbnail() ) : ?>
-					<?php the_post_thumbnail( 'gebhart-wide', array( 'class' => 'single-ref__image', 'alt' => '' ) ); ?>
+					<figure class="shot"><?php the_post_thumbnail( 'full', array( 'class' => 'single-ref__image', 'alt' => '' ) ); ?></figure>
 				<?php elseif ( current_user_can( 'edit_post', get_the_ID() ) ) : ?>
 					<div class="placeholder-img single-ref__image">Titelbild fehlt noch – im Backend als Beitragsbild setzen<br>(nur für dich sichtbar)</div>
 				<?php endif; ?>
