@@ -662,14 +662,14 @@ add_shortcode(
 			'Website'     => $d['web'],
 			'Telefon'     => $d['tel'],
 		);
-		$out = '<div class="danke-box"><p class="meta-label">Deine Angaben</p><dl class="danke-box__rows">';
+		$out = '<div class="danke-wrap"><div class="danke-box"><p class="meta-label">Deine Angaben</p><dl class="danke-box__rows">';
 		foreach ( $rows as $label => $val ) {
 			if ( '' !== (string) $val ) {
 				$out .= '<div><dt>' . esc_html( $label ) . '</dt><dd>' . esc_html( $val ) . '</dd></div>';
 			}
 		}
 		$out .= '</dl><p class="meta-label">Dein Vorhaben</p><div class="danke-box__msg">' . nl2br( esc_html( $d['msg'] ) ) . '</div>';
-		$out .= '<p class="danke-box__hint">Etwas vergessen? Schreib mir einfach an <a href="mailto:info@philippgebhart.de">info@philippgebhart.de</a>.</p></div>';
+		$out .= '<p class="danke-box__hint">Etwas vergessen? Schreib mir einfach an <a href="mailto:info@philippgebhart.de">info@philippgebhart.de</a>.</p></div></div>';
 		return $out;
 	}
 );
