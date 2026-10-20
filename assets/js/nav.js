@@ -20,7 +20,7 @@
 
 /* Hub-Grafik und Besucherweg: werden eingeblendet und gezeichnet, sobald sie im Bild erscheinen. */
 ( function () {
-	var hubs = document.querySelectorAll( '.hub, .journey, .ref-row' );
+	var hubs = document.querySelectorAll( '.hub, .journey, .ref-row, .post-figure' );
 	if ( ! hubs.length ) {
 		return;
 	}
