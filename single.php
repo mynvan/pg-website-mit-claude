@@ -54,7 +54,7 @@ while ( have_posts() ) :
 			</section>
 
 			<?php
-			$more = new WP_Query(
+			$related = new WP_Query(
 				array(
 					'post_type'           => 'post',
 					'posts_per_page'      => 2,
@@ -63,14 +63,14 @@ while ( have_posts() ) :
 					'no_found_rows'       => true,
 				)
 			);
-			if ( $more->have_posts() ) :
+			if ( $related->have_posts() ) :
 				?>
 				<section>
 					<h2 style="font-size:26px;margin-bottom:8px">Weitere Beiträge</h2>
 					<div class="post-list">
 						<?php
-						while ( $more->have_posts() ) {
-							$more->the_post();
+						while ( $related->have_posts() ) {
+							$related->the_post();
 							get_template_part( 'template-parts/post-row' );
 						}
 						wp_reset_postdata();
