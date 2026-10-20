@@ -957,7 +957,7 @@ function gebhart_schema_graph() {
 		}
 		$leistungen = gebhart_ref( 'ref_leistungen', $post_id );
 		if ( '' !== $leistungen ) {
-			$work['keywords'] = gebhart_schema_text( $leistungen );
+			$work['keywords'] = str_replace( array( ' · ', '·' ), ', ', gebhart_schema_text( $leistungen ) );
 		}
 		$kunde = gebhart_ref( 'ref_kunde', $post_id );
 		if ( '' !== $kunde ) {
