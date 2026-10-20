@@ -45,6 +45,16 @@ while ( have_posts() ) :
 				<?php echo $prepared['content']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Ausgabe des Beitragsinhalts nach the_content-Filter ?>
 			</div>
 
+			<aside class="author-box" aria-label="Über den Autor">
+				<img class="author-box__img" src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/10/philipp-gebhart-portrait-01.webp' ) ); ?>" alt="" width="96" height="96" loading="lazy">
+				<div class="author-box__text">
+					<p class="meta-label">Über den Autor</p>
+					<p class="author-box__name">Philipp Gebhart</p>
+					<p>Webdesigner aus Friedberg bei Augsburg mit Hintergrund im Online-Marketing. Seit 2011 baue ich WordPress-Websites für Unternehmen und unterrichte seit über zehn Jahren an der VHS Augsburg.</p>
+					<p><a href="<?php echo esc_url( home_url( '/ueber-mich/' ) ); ?>">Mehr über mich →</a></p>
+				</div>
+			</aside>
+
 			<section class="cta-box">
 				<div>
 					<h2 style="font-size:26px">Dein Projekt</h2>

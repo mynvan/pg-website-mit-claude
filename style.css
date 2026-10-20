@@ -1263,3 +1263,15 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 	.entry-content > .hero--photo::after { background: linear-gradient(180deg, rgba(20, 18, 16, .78) 0%, rgba(20, 18, 16, .88) 100%); }
 	.entry-content .hero--photo .hero__bg img { object-position: 55% 60%; }
 }
+
+/* Autorenkasten unter Beiträgen */
+.author-box { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 24px; align-items: start; padding: 28px 0; border-top: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong); }
+.author-box > * , .author-box__text > * { margin: 0; }
+.author-box__text { display: flex; flex-direction: column; gap: 8px; }
+.author-box__img { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; object-position: center 20%; box-shadow: 0 10px 24px -14px rgba(20, 18, 16, .5); }
+.author-box__name { font-family: var(--serif); font-size: 22px; color: var(--ink); line-height: 1.2; }
+@media (max-width: 599px) { .author-box { grid-template-columns: 72px minmax(0, 1fr); gap: 16px; } .author-box__img { width: 72px; height: 72px; } }
+
+/* Hinweis auf passenden Wissensbeitrag (Leistungsseiten) */
+.entry-content .wissen-hint { border-left: 3px solid var(--accent); padding-left: 16px; font-size: 15px; color: var(--text); }
+.entry-content .wissen-hint strong { font-size: .8125rem; letter-spacing: .06em; text-transform: uppercase; color: var(--accent-text); font-weight: 600; display: block; margin-bottom: 2px; }

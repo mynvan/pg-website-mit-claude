@@ -281,28 +281,80 @@ function gebhart_referenzen_shortcode( $atts ) {
 	if ( ! post_type_exists( 'referenz' ) ) {
 		return '';
 	}
-	$atts  = shortcode_atts( array( 'limit' => 2 ), $atts, 'gebhart_referenzen' );
-	$query = new WP_Query(
+	$atts = shortcode_atts(
 		array(
-			'post_type'      => 'referenz',
-			'posts_per_page' => max( 1, (int) $atts['limit'] ),
-			'orderby'        => array(
-				'menu_order' => 'ASC',
-				'date'       => 'DESC',
-			),
-			'no_found_rows'  => true,
-		)
+			'limit'    => 2,
+			'leistung' => '',     // Slug aus der Taxonomie "leistung", z. B. website-relaunch.
+			'exclude'  => '',     // Komma-getrennte Referenz-Slugs, die nicht erscheinen sollen.
+			'style'    => 'row',  // "row" = große Zeilen (Startseite), "mini" = kompakte Liste.
+		),
+		$atts,
+		'gebhart_referenzen'
 	);
+	$args = array(
+		'post_type'      => 'referenz',
+		'posts_per_page' => max( 1, (int) $atts['limit'] ),
+		'orderby'        => array(
+			'menu_order' => 'ASC',
+			'date'       => 'DESC',
+		),
+		'no_found_rows'  => true,
+	);
+	if ( '' !== $atts['leistung'] ) {
+		$args['tax_query'] = array(
+			array(
+				'taxonomy' => 'leistung',
+				'field'    => 'slug',
+				'terms'    => array_map( 'sanitize_title', explode( ',', $atts['leistung'] ) ),
+			),
+		);
+	}
+	if ( '' !== $atts['exclude'] ) {
+		$ids = array();
+		foreach ( explode( ',', $atts['exclude'] ) as $slug ) {
+			$p = get_page_by_path( sanitize_title( $slug ), OBJECT, 'referenz' );
+			if ( $p ) {
+				$ids[] = $p->ID;
+			}
+		}
+		if ( $ids ) {
+			$args['post__not_in'] = $ids;
+		}
+	}
+	$query = new WP_Query( $args );
 	if ( ! $query->have_posts() ) {
 		return '';
 	}
 	ob_start();
-	echo '<div class="ref-list">';
-	while ( $query->have_posts() ) {
-		$query->the_post();
-		get_template_part( 'template-parts/referenz-row' );
+	if ( 'mini' === $atts['style'] ) {
+		echo '<div class="ref-minis">';
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			$meta = gebhart_ref( 'ref_untertitel' );
+			echo '<div class="ref-mini">';
+			if ( has_post_thumbnail() ) {
+				echo '<figure class="shot"><a href="' . esc_url( get_permalink() ) . '" aria-hidden="true" tabindex="-1">' . get_the_post_thumbnail( null, 'medium_large', array( 'alt' => '' ) ) . '</a></figure>';
+			}
+			echo '<div class="ref-row__text">';
+			if ( $meta ) {
+				echo '<p class="ref-row__meta">' . esc_html( $meta ) . '</p>';
+			}
+			echo '<h3><a href="' . esc_url( get_permalink() ) . '">' . esc_html( get_the_title() ) . '</a></h3>';
+			if ( has_excerpt() ) {
+				echo '<p>' . esc_html( get_the_excerpt() ) . '</p>';
+			}
+			echo '<p class="ref-mini__more"><a href="' . esc_url( get_permalink() ) . '">Projekt ansehen →</a></p>';
+			echo '</div></div>';
+		}
+		echo '</div>';
+	} else {
+		echo '<div class="ref-list">';
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			get_template_part( 'template-parts/referenz-row' );
+		}
+		echo '</div>';
 	}
-	echo '</div>';
 	wp_reset_postdata();
 	return ob_get_clean();
 }
