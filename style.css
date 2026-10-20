@@ -1301,3 +1301,9 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 .site-logo__mark { display: block; width: auto; height: 32px; flex: none; transition: color .2s ease; }
 .site-logo:hover .site-logo__mark, .site-logo:focus-visible .site-logo__mark { color: var(--accent); }
 @media (max-width: 599px) { .site-logo__mark { height: 28px; } }
+
+/* Logo: Unterzeile unter dem Namen */
+.site-logo__words { display: flex; flex-direction: column; line-height: 1.1; }
+.site-logo__claim { font-family: var(--sans); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
+.site-logo__mark { height: 36px; }
+@media (max-width: 599px) { .site-logo__mark { height: 32px; } .site-logo__claim { font-size: 9.5px; letter-spacing: .12em; } }
