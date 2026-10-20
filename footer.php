@@ -38,16 +38,19 @@
 			<?php } ?>
 		</div>
 		<div>
-			<h2>Dein Projekt</h2>
-			<p>Beschreibe kurz dein Vorhaben – gemeinsam klären wir, was du brauchst.</p>
-			<p><a href="<?php echo esc_url( gebhart_contact_url() ); ?>">Projekt anfragen ↗</a></p>
+			<h2>Kontakt</h2>
+			<ul class="footer-contact">
+				<li><span class="footer-contact__label">Telefon</span><a href="tel:+491778362302">0177 8362302</a></li>
+				<li><span class="footer-contact__label">E-Mail</span><a href="mailto:info@philippgebhart.de">info@philippgebhart.de</a></li>
+				<li><span class="footer-contact__label">Erreichbar</span>Mo–Fr 9:00–18:00 Uhr</li>
+			</ul>
 		</div>
 	</div>
 	<div class="wrap site-footer__bottom">
 		<span>© <?php echo esc_html( gmdate( 'Y' ) ); ?> Philipp Gebhart</span>
 		<ul>
 			<li><a href="<?php echo esc_url( home_url( '/impressum/' ) ); ?>">Impressum</a></li>
-			<li><a href="<?php echo esc_url( get_privacy_policy_url() ? get_privacy_policy_url() : home_url( '/datenschutz/' ) ); ?>">Datenschutz</a></li>
+			<li><a href="<?php echo esc_url( get_privacy_policy_url() ? get_privacy_policy_url() : home_url( '/datenschutzerklaerung/' ) ); ?>">Datenschutz</a></li>
 		</ul>
 	</div>
 </footer>

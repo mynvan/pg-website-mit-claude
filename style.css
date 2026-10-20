@@ -1275,3 +1275,10 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 /* Hinweis auf passenden Wissensbeitrag (Leistungsseiten) */
 .entry-content .wissen-hint { border-left: 3px solid var(--accent); padding-left: 16px; font-size: 15px; color: var(--text); }
 .entry-content .wissen-hint strong { font-size: .8125rem; letter-spacing: .06em; text-transform: uppercase; color: var(--accent-text); font-weight: 600; display: block; margin-bottom: 2px; }
+
+/* Footer: Kontaktspalte */
+.site-footer__top .footer-contact { gap: 12px; }
+.footer-contact li { display: flex; flex-direction: column; gap: 2px; }
+.footer-contact__label { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.footer-contact a { color: var(--ink); text-decoration: none; }
+.footer-contact a:hover { color: var(--accent-hover); text-decoration: underline; }
