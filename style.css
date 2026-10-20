@@ -1246,15 +1246,15 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 
 /* Hero mit Foto als Hintergrund (Projektanfrage): dunkler Verlauf von links für lesbaren Text */
 .entry-content > .hero--photo { position: relative; isolation: isolate; overflow: hidden; background: var(--dark); color: var(--on-dark-muted); padding-block: clamp(72px, 10vw, 140px); }
-.entry-content > .hero--photo > .hero__bg { position: absolute; inset: 0; z-index: -2; width: 100%; max-width: none; height: 100%; margin: 0; padding: 0; }
-.entry-content > .hero--photo > .hero__bg img { width: 100%; height: 100%; object-fit: cover; object-position: 60% 55%; display: block; border-radius: 0; }
+.entry-content .hero--photo .hero__bg { position: absolute; inset: 0; z-index: -2; width: 100%; max-width: none; height: 100%; margin: 0; padding: 0; }
+.entry-content .hero--photo .hero__bg img { width: 100%; height: 100%; object-fit: cover; object-position: 60% 55%; display: block; border-radius: 0; }
 .entry-content > .hero--photo::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
 	background: linear-gradient(90deg, rgba(20, 18, 16, .92) 0%, rgba(20, 18, 16, .82) 35%, rgba(20, 18, 16, .35) 65%, rgba(20, 18, 16, .1) 100%); }
-.entry-content > .hero--photo h1 { color: var(--on-dark); }
-.entry-content > .hero--photo p { color: var(--on-dark-muted); }
-.entry-content > .hero--photo .eyebrow, .entry-content > .hero--photo .hero__location { color: #F08A3C; }
-.entry-content > .hero--photo > :is(h1, p) { max-width: calc(600px + var(--gutter) * 2); }
+.entry-content .hero--photo h1 { color: var(--on-dark); }
+.entry-content .hero--photo p { color: var(--on-dark-muted); }
+.entry-content .hero--photo .eyebrow, .entry-content .hero--photo .hero__location { color: #F08A3C; }
+.entry-content .hero--photo :is(h1, p), .entry-content .hero--photo .wp-block-group__inner-container > :is(h1, p) { max-width: calc(600px + var(--gutter) * 2); }
 @media (max-width: 899px) {
 	.entry-content > .hero--photo::after { background: linear-gradient(180deg, rgba(20, 18, 16, .78) 0%, rgba(20, 18, 16, .88) 100%); }
-	.entry-content > .hero--photo > .hero__bg img { object-position: 55% 60%; }
+	.entry-content .hero--photo .hero__bg img { object-position: 55% 60%; }
 }
