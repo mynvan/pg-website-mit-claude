@@ -1200,3 +1200,26 @@ add_action(
 	},
 	4
 );
+
+/* ---------- Canonical für Übersichten ----------
+ * Einzelseiten bekommen den Canonical von WordPress selbst. Für Wissen, Referenzen und
+ * Themenseiten setzt das Theme ihn; Folgeseiten (page/2/ …) verweisen auf sich selbst.
+ */
+add_action(
+	'wp_head',
+	function () {
+		if ( gebhart_seo_plugin_active() || is_singular() || is_404() || is_search() ) {
+			return;
+		}
+		$url = gebhart_current_url();
+		if ( ! $url ) {
+			return;
+		}
+		$paged = (int) get_query_var( 'paged' );
+		if ( $paged > 1 ) {
+			$url = trailingslashit( $url ) . user_trailingslashit( 'page/' . $paged, 'paged' );
+		}
+		echo '<link rel="canonical" href="' . esc_url( $url ) . '">' . "\n";
+	},
+	3
+);
