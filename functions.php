@@ -1119,3 +1119,84 @@ add_action(
 	},
 	5
 );
+
+/* ---------- Vorschau beim Teilen (Open Graph, Twitter Card) ----------
+ * Titel und Beschreibung aus den SEO-Feldern. Bild: Beitragsbild bei Beiträgen und Referenzen,
+ * sonst das Standardbild (Startseiten-Hero mit Claim, 1200 × 630).
+ * Ist ein SEO-Plugin aktiv, entfällt diese Ausgabe.
+ */
+define( 'GEBHART_OG_DEFAULT_IMAGE', 153 );
+
+function gebhart_current_url() {
+	if ( is_front_page() ) {
+		return trailingslashit( home_url() );
+	}
+	if ( is_home() && get_option( 'page_for_posts' ) ) {
+		return get_permalink( (int) get_option( 'page_for_posts' ) );
+	}
+	if ( is_post_type_archive( 'referenz' ) ) {
+		return get_post_type_archive_link( 'referenz' );
+	}
+	if ( is_category() || is_tag() || is_tax() ) {
+		$link = get_term_link( get_queried_object() );
+		return is_wp_error( $link ) ? '' : $link;
+	}
+	if ( is_singular() ) {
+		return get_permalink( get_queried_object_id() );
+	}
+	return '';
+}
+
+add_action(
+	'wp_head',
+	function () {
+		if ( gebhart_seo_plugin_active() || is_404() || is_search() ) {
+			return;
+		}
+		$url = gebhart_current_url();
+		if ( ! $url ) {
+			return;
+		}
+		$title = gebhart_schema_text( wp_get_document_title() );
+		$desc  = gebhart_current_description();
+		if ( '' === $desc && get_option( 'page_on_front' ) ) {
+			$desc = get_post_meta( (int) get_option( 'page_on_front' ), '_gebhart_seo_desc', true );
+		}
+		$desc = gebhart_schema_text( $desc );
+
+		$img_id = GEBHART_OG_DEFAULT_IMAGE;
+		if ( ( is_singular( 'post' ) || is_singular( 'referenz' ) ) && has_post_thumbnail() ) {
+			$img_id = get_post_thumbnail_id( get_queried_object_id() );
+		}
+		$img = wp_get_attachment_image_src( $img_id, $img_id === GEBHART_OG_DEFAULT_IMAGE ? 'full' : 'gebhart-wide' );
+		$alt = $img ? get_post_meta( $img_id, '_wp_attachment_image_alt', true ) : '';
+
+		$tags = array(
+			'og:locale'      => 'de_DE',
+			'og:site_name'   => 'Philipp Gebhart',
+			'og:type'        => is_singular( 'post' ) ? 'article' : 'website',
+			'og:title'       => $title,
+			'og:description' => $desc,
+			'og:url'         => $url,
+		);
+		if ( $img ) {
+			$tags['og:image']        = $img[0];
+			$tags['og:image:width']  = $img[1];
+			$tags['og:image:height'] = $img[2];
+			if ( $alt ) {
+				$tags['og:image:alt'] = $alt;
+			}
+		}
+		if ( is_singular( 'post' ) ) {
+			$tags['article:published_time'] = get_the_date( 'c' );
+			$tags['article:modified_time']  = get_the_modified_date( 'c' );
+		}
+		foreach ( $tags as $prop => $val ) {
+			if ( '' !== (string) $val ) {
+				echo '<meta property="' . esc_attr( $prop ) . '" content="' . esc_attr( $val ) . '">' . "\n";
+			}
+		}
+		echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
+	},
+	4
+);
