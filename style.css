@@ -1282,3 +1282,16 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 .footer-contact__label { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 .footer-contact a { color: var(--ink); text-decoration: none; }
 .footer-contact a:hover { color: var(--accent-hover); text-decoration: underline; }
+
+/* Danke-Seite nach der Projektanfrage */
+.entry-content .danke__lead { font-size: 18px; max-width: 600px; }
+.entry-content .danke-section:has(.danke-box) { padding-top: 0; }
+.entry-content .danke-section:not(:has(.danke-box)) { display: none; }
+.danke-box { background: #fff; border: 1px solid var(--line-strong); border-top: 3px solid var(--accent); border-radius: var(--radius); padding: 24px; display: flex; flex-direction: column; gap: 12px; max-width: 760px; }
+.danke-box > * { margin: 0; }
+.danke-box__rows { margin: 0; border-top: 1px solid var(--line); }
+.danke-box__rows div { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.danke-box__rows dt { color: var(--muted); font-size: 14px; }
+.danke-box__rows dd { margin: 0; color: var(--ink); overflow-wrap: anywhere; }
+.danke-box__msg { background: var(--bg); border-radius: var(--radius); padding: 16px; color: var(--ink); overflow-wrap: anywhere; }
+.danke-box__hint { font-size: 14px; color: var(--muted); }

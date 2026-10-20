@@ -508,7 +508,7 @@ function gebhart_contact_form() {
 		<div class="gebhart-form__row gebhart-form__check">
 			<label>
 				<input type="checkbox" name="ct_privacy" value="1" required>
-				<span>Ich habe die <a href="<?php echo esc_url( get_privacy_policy_url() ? get_privacy_policy_url() : home_url( '/datenschutz/' ) ); ?>">Datenschutzerklärung</a> gelesen und bin mit der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage einverstanden. *</span>
+				<span>Ich habe die <a href="<?php echo esc_url( get_privacy_policy_url() ? get_privacy_policy_url() : home_url( '/datenschutzerklaerung/' ) ); ?>">Datenschutzerklärung</a> gelesen und bin mit der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage einverstanden. *</span>
 			</label>
 		</div>
 		<button class="btn" type="submit">Anfrage senden ↗</button>
@@ -574,8 +574,131 @@ function gebhart_contact_handle() {
 		'Reply-To: ' . $name . ' <' . $mail . '>',
 	);
 	$sent = wp_mail( get_option( 'admin_email' ), 'Projektanfrage von ' . $name, $body, $headers );
-	$done( $sent ? 'ok' : 'fehler' );
+	if ( ! $sent ) {
+		$done( 'fehler' );
+	}
+
+	// Kopie an den Absender (nur Text, keine Links aus der Nachricht werden verändert).
+	$copy  = 'Hallo ' . $name . ",\n\n";
+	$copy .= "danke für deine Anfrage! Ich habe sie erhalten, schaue sie mir in Ruhe an und melde mich zeitnah bei dir.\n\n";
+	$copy .= "Zur Sicherheit hier noch einmal deine Angaben:\n\n";
+	$copy .= 'Thema: ' . ( $topic ? $topic : '–' ) . "\n";
+	if ( 'Wartung & Betreuung' === $topic ) {
+		$copy .= 'Paket: ' . $packs[ $pack ] . "\nHosting inkl. E-Mail: " . ( $host ? 'ja' : 'nein' ) . "\n";
+	}
+	$copy .= 'Website: ' . ( $web ? $web : '–' ) . "\nTelefon: " . ( $tel ? $tel : '–' ) . "\n\nDein Vorhaben:\n$msg\n\n";
+	$copy .= "Etwas vergessen? Antworte einfach auf diese E-Mail.\n\nViele Grüße\nPhilipp Gebhart\n0177 8362302 · " . home_url( '/' ) . "\n";
+	wp_mail(
+		$mail,
+		'Deine Anfrage bei Philipp Gebhart',
+		$copy,
+		array(
+			'Content-Type: text/plain; charset=UTF-8',
+			'Reply-To: Philipp Gebhart <' . get_option( 'admin_email' ) . '>',
+		)
+	);
+
+	// Danke-Seite: Angaben 30 Minuten unter einem Zufallsschlüssel merken (keine persönlichen Daten in der URL).
+	$thanks = get_page_by_path( 'dankesseite' );
+	if ( $thanks && 'publish' === $thanks->post_status ) {
+		$token = wp_generate_password( 20, false, false );
+		set_transient(
+			'gebhart_ty_' . $token,
+			array(
+				'name'  => $name,
+				'topic' => $topic,
+				'pack'  => 'Wartung & Betreuung' === $topic ? $packs[ $pack ] : '',
+				'host'  => 'Wartung & Betreuung' === $topic ? $host : null,
+				'web'   => $web,
+				'tel'   => $tel,
+				'msg'   => $msg,
+			),
+			30 * MINUTE_IN_SECONDS
+		);
+		wp_safe_redirect( add_query_arg( 'a', $token, get_permalink( $thanks ) ) );
+		exit;
+	}
+	$done( 'ok' );
 }
+
+/**
+ * Danke-Seite: gemerkte Angaben aus der Anfrage (oder null).
+ */
+function gebhart_thanks_data() {
+	static $data = false;
+	if ( false === $data ) {
+		$token = isset( $_GET['a'] ) ? preg_replace( '/[^A-Za-z0-9]/', '', wp_unslash( $_GET['a'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
+		$data  = $token ? get_transient( 'gebhart_ty_' . $token ) : null;
+		$data  = is_array( $data ) ? $data : null;
+	}
+	return $data;
+}
+
+// [gebhart_danke_gruss]: persönliche Begrüßung mit Vorname, sonst neutral.
+add_shortcode(
+	'gebhart_danke_gruss',
+	function () {
+		$d = gebhart_thanks_data();
+		if ( $d && '' !== $d['name'] ) {
+			$first = strtok( $d['name'], ' ' );
+			return '<p class="danke__lead">Hallo ' . esc_html( $first ) . ', ich habe deine Nachricht erhalten und kümmere mich persönlich darum. Eine Kopie deiner Anfrage ist auch per E-Mail an dich unterwegs.</p>';
+		}
+		return '<p class="danke__lead">Ich habe deine Nachricht erhalten und kümmere mich persönlich darum.</p>';
+	}
+);
+
+// [gebhart_danke_angaben]: Zusammenfassung der abgeschickten Angaben.
+add_shortcode(
+	'gebhart_danke_angaben',
+	function () {
+		$d = gebhart_thanks_data();
+		if ( ! $d ) {
+			return '';
+		}
+		$rows = array(
+			'Thema'       => $d['topic'],
+			'Paket'       => $d['pack'],
+			'Hosting'     => null === $d['host'] ? '' : ( $d['host'] ? 'inklusive E-Mail dazubuchen' : '' ),
+			'Website'     => $d['web'],
+			'Telefon'     => $d['tel'],
+		);
+		$out = '<div class="danke-box"><p class="meta-label">Deine Angaben</p><dl class="danke-box__rows">';
+		foreach ( $rows as $label => $val ) {
+			if ( '' !== (string) $val ) {
+				$out .= '<div><dt>' . esc_html( $label ) . '</dt><dd>' . esc_html( $val ) . '</dd></div>';
+			}
+		}
+		$out .= '</dl><p class="meta-label">Dein Vorhaben</p><div class="danke-box__msg">' . nl2br( esc_html( $d['msg'] ) ) . '</div>';
+		$out .= '<p class="danke-box__hint">Etwas vergessen? Schreib mir einfach an <a href="mailto:info@philippgebhart.de">info@philippgebhart.de</a>.</p></div>';
+		return $out;
+	}
+);
+
+// Danke-Seite nicht indexieren und nicht in die Sitemap aufnehmen.
+add_filter(
+	'wp_robots',
+	function ( $robots ) {
+		if ( is_page( 'dankesseite' ) ) {
+			$robots['noindex']  = true;
+			$robots['nofollow'] = true;
+		}
+		return $robots;
+	}
+);
+add_filter(
+	'wp_sitemaps_posts_query_args',
+	function ( $args, $post_type ) {
+		if ( 'page' === $post_type ) {
+			$thanks = get_page_by_path( 'dankesseite' );
+			if ( $thanks ) {
+				$args['post__not_in'] = array_merge( isset( $args['post__not_in'] ) ? (array) $args['post__not_in'] : array(), array( $thanks->ID ) );
+			}
+		}
+		return $args;
+	},
+	10,
+	2
+);
 add_action( 'admin_post_nopriv_gebhart_kontakt', 'gebhart_contact_handle' );
 add_action( 'admin_post_gebhart_kontakt', 'gebhart_contact_handle' );
 

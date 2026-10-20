@@ -29,7 +29,7 @@ while ( have_posts() ) :
 endwhile;
 
 // Die allgemeine Anfrage-Leiste entfällt, wenn die Seite eine eigene hat oder selbst das Formular zeigt.
-$gebhart_skip_cta = is_front_page() || false !== strpos( $gebhart_content, 'band--dark' ) || false !== strpos( $gebhart_content, 'gebhart_kontaktformular' );
+$gebhart_skip_cta = is_front_page() || false !== strpos( $gebhart_content, 'band--dark' ) || false !== strpos( $gebhart_content, 'gebhart_kontaktformular' ) || false !== strpos( $gebhart_content, 'gebhart_danke' );
 if ( ! $gebhart_skip_cta ) {
 	get_template_part( 'template-parts/cta' );
 }
