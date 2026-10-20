@@ -1194,7 +1194,8 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 .pf-arrow--muted { color: var(--muted); }
 .pf-strike { text-decoration: line-through; text-decoration-color: #B3261E; color: var(--muted); }
 /* Kostenbausteine */
-.pf-costs { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.pf-costs, .article__body .pf-costs { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.article__body .post-figure p, .article__body .post-figure li { margin: 0; }
 .pf-cost { display: grid; grid-template-columns: minmax(0, 11rem) minmax(0, 1fr); gap: 12px; align-items: center; font-size: .875rem; color: var(--ink); }
 .pf-cost__bar { display: block; height: 14px; width: var(--w, 50%); border-radius: 3px; background: var(--accent); transform-origin: left; }
 .pf-cost--base .pf-cost__bar { background: var(--ink); }
