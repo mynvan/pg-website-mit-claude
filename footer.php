@@ -3,7 +3,14 @@
 <footer class="site-footer">
 	<div class="wrap site-footer__top">
 		<div>
-			<h2><?php bloginfo( 'name' ); ?></h2>
+			<h2 class="screen-reader-text"><?php bloginfo( 'name' ); ?></h2>
+			<a class="site-logo footer-logo" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?> – Startseite">
+				<?php echo gebhart_logo_mark(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- festes SVG ?>
+				<span class="site-logo__words" aria-hidden="true">
+					<span class="site-logo__text"><?php bloginfo( 'name' ); ?></span>
+					<span class="site-logo__claim">Webdesign &amp; WordPress</span>
+				</span>
+			</a>
 			<p>Websites für Unternehmen. Professionell umgesetzt. Komplett betreut.</p>
 			<p>Friedberg bei Augsburg – für Unternehmen in der Region und darüber hinaus.</p>
 		</div>
