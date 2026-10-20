@@ -1309,3 +1309,5 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 @media (max-width: 599px) { .site-logo__mark { height: 32px; } .site-logo__claim { font-size: 9.5px; letter-spacing: .12em; } }
 .site-footer .footer-logo { margin-bottom: 16px; color: var(--ink); text-decoration: none; }
 .site-footer .footer-logo .site-logo__text { font-size: 20px; }
+.site-logo__claim { white-space: nowrap; }
+.site-footer .footer-logo .site-logo__claim { letter-spacing: .1em; font-size: 10px; }
