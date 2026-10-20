@@ -1239,3 +1239,9 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 .entry-content .um-cta h2 { margin-top: 0; font-size: clamp(26px, 3vw, 32px); }
 .entry-content .um-cta__btn { justify-content: flex-end; }
 @media (max-width: 781px) { .entry-content .um-cta__btn { justify-content: flex-start; } }
+
+/* Persönliches Foto (Café): Über mich und Projektanfrage */
+.entry-content .um-photo img, .entry-content .contact-photo img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 52% 60%; border-radius: var(--radius); box-shadow: 0 18px 40px -22px rgba(20, 18, 16, .45); display: block; }
+.entry-content .um-cafe h2 { margin-top: 0; }
+.entry-content .contact-photo { margin: 4px 0 8px; }
+.entry-content .contact-photo img { aspect-ratio: 16 / 10; }
