@@ -48,7 +48,7 @@ while ( have_posts() ) :
 			<section class="cta-box">
 				<div>
 					<h2 style="font-size:26px">Dein Projekt</h2>
-					<p>Beschreibe kurz dein Vorhaben – gemeinsam klären wir, was du brauchst.</p>
+					<p>Erzähl mir kurz von deinem Vorhaben – ich melde mich persönlich bei dir.</p>
 				</div>
 				<a class="btn" href="<?php echo esc_url( gebhart_contact_url() ); ?>">Projekt anfragen ↗</a>
 			</section>
