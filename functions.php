@@ -605,25 +605,301 @@ add_filter(
 	}
 );
 
+/**
+ * Meta-Beschreibung der aktuellen Ansicht (auch für die Schema-Daten genutzt).
+ */
+function gebhart_current_description() {
+	$desc = '';
+	if ( is_home() && get_option( 'page_for_posts' ) ) {
+		$desc = get_post_meta( (int) get_option( 'page_for_posts' ), '_gebhart_seo_desc', true );
+	} elseif ( is_post_type_archive( 'referenz' ) ) {
+		$desc = 'Referenzen von Philipp Gebhart: WordPress-Websites, Relaunches, Betreuung und SEO für Unternehmen in Friedberg, Augsburg und Umgebung – mit Ausgangslage, Vorgehen und Ergebnis.';
+	} elseif ( is_singular( 'referenz' ) ) {
+		$desc = has_excerpt() ? wp_strip_all_tags( get_the_excerpt() ) : '';
+	} elseif ( is_singular() ) {
+		$desc = get_post_meta( get_queried_object_id(), '_gebhart_seo_desc', true );
+		if ( '' === $desc && is_singular( 'post' ) && has_excerpt() ) {
+			$desc = wp_strip_all_tags( get_the_excerpt() );
+		}
+	}
+	return (string) $desc;
+}
+
 add_action(
 	'wp_head',
 	function () {
 		if ( gebhart_seo_plugin_active() ) {
 			return;
 		}
-		$desc = '';
-		if ( is_home() && get_option( 'page_for_posts' ) ) {
-			$desc = get_post_meta( (int) get_option( 'page_for_posts' ), '_gebhart_seo_desc', true );
-		} elseif ( is_post_type_archive( 'referenz' ) ) {
-			$desc = 'Referenzen von Philipp Gebhart: WordPress-Websites, Relaunches, Betreuung und SEO für Unternehmen in Friedberg, Augsburg und Umgebung – mit Ausgangslage, Vorgehen und Ergebnis.';
-		} elseif ( is_singular( 'referenz' ) ) {
-			$desc = has_excerpt() ? wp_strip_all_tags( get_the_excerpt() ) : '';
-		} elseif ( is_singular() ) {
-			$desc = get_post_meta( get_queried_object_id(), '_gebhart_seo_desc', true );
-		}
+		$desc = gebhart_current_description();
 		if ( '' !== $desc ) {
 			echo '<meta name="description" content="' . esc_attr( $desc ) . '">' . "\n";
 		}
 	},
 	1
+);
+
+
+/* ---------- Strukturierte Daten (Schema.org, JSON-LD) ----------
+ * Ein zusammenhängender @graph: Unternehmen (ProfessionalService), Person, WebSite,
+ * die aktuelle Seite mit Breadcrumb sowie je nach Ansicht Service oder BlogPosting.
+ * FAQ-Daten stehen direkt im Inhalt der Seiten, auf denen die Fragen sichtbar sind.
+ * Ist ein SEO-Plugin aktiv, entfällt diese Ausgabe.
+ */
+function gebhart_schema_graph() {
+	$home     = trailingslashit( home_url() );
+	$biz_id   = $home . '#business';
+	$person   = $home . '#person';
+	$site_id  = $home . '#website';
+	$portrait = $home . 'wp-content/uploads/2026/10/philipp-gebhart-portrait-01.webp';
+
+	$services = array(
+		'wordpress-website'            => 'WordPress-Website',
+		'website-relaunch'             => 'Website-Relaunch',
+		'wordpress-wartung'            => 'WordPress-Wartung & Betreuung',
+		'suchmaschinenoptimierung-seo' => 'Suchmaschinenoptimierung (SEO)',
+	);
+	$offers = array();
+	foreach ( $services as $slug => $name ) {
+		$page = get_page_by_path( $slug );
+		if ( $page ) {
+			$offers[] = array(
+				'@type'       => 'Offer',
+				'itemOffered' => array(
+					'@type' => 'Service',
+					'@id'   => get_permalink( $page ) . '#service',
+					'name'  => $name,
+					'url'   => get_permalink( $page ),
+				),
+			);
+		}
+	}
+
+	$graph = array();
+
+	$graph[] = array(
+		'@type'                     => 'ProfessionalService',
+		'@id'                       => $biz_id,
+		'name'                      => 'Philipp Gebhart – Webdesign & WordPress',
+		'alternateName'             => 'philippgebhart.de',
+		'description'               => 'WordPress-Websites, Relaunch, Wartung und SEO für Unternehmen, Selbstständige und Praxen – persönlich betreut aus Friedberg bei Augsburg.',
+		'url'                       => $home,
+		'image'                     => $portrait,
+		'telephone'                 => '+49 177 8362302',
+		'email'                     => 'info@philippgebhart.de',
+		'vatID'                     => 'DE323183104',
+		'address'                   => array(
+			'@type'           => 'PostalAddress',
+			'streetAddress'   => 'Christophberg 1',
+			'postalCode'      => '86316',
+			'addressLocality' => 'Friedberg',
+			'addressRegion'   => 'Bayern',
+			'addressCountry'  => 'DE',
+		),
+		'geo'                       => array(
+			'@type'     => 'GeoCoordinates',
+			'latitude'  => 48.341769,
+			'longitude' => 11.001211,
+		),
+		'hasMap'                    => 'https://maps.google.com/?cid=2312351749588598698',
+		'areaServed'                => array(
+			array( '@type' => 'City', 'name' => 'Friedberg' ),
+			array( '@type' => 'City', 'name' => 'Augsburg' ),
+			array( '@type' => 'City', 'name' => 'Aichach' ),
+			array( '@type' => 'AdministrativeArea', 'name' => 'Landkreis Aichach-Friedberg' ),
+		),
+		'openingHoursSpecification' => array(
+			array(
+				'@type'     => 'OpeningHoursSpecification',
+				'dayOfWeek' => array( 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday' ),
+				'opens'     => '09:00',
+				'closes'    => '18:00',
+			),
+		),
+		'founder'                   => array( '@id' => $person ),
+		'sameAs'                    => array(
+			'https://maps.google.com/?cid=2312351749588598698',
+			'https://www.google.com/search?kgmid=/g/11c1rtc7n9',
+		),
+		'hasOfferCatalog'           => array(
+			'@type'           => 'OfferCatalog',
+			'name'            => 'Leistungen',
+			'itemListElement' => $offers,
+		),
+	);
+
+	$graph[] = array(
+		'@type'       => 'Person',
+		'@id'         => $person,
+		'name'        => 'Philipp Gebhart',
+		'jobTitle'    => 'Webdesigner',
+		'description' => 'Webdesigner aus Friedberg bei Augsburg mit Hintergrund im Online-Marketing. Seit 2011 eigene Webagentur, seit über zehn Jahren Dozent an der VHS Augsburg.',
+		'image'       => $portrait,
+		'url'         => $home . 'ueber-mich/',
+		'worksFor'    => array( '@id' => $biz_id ),
+		'knowsAbout'  => array( 'WordPress', 'Webdesign', 'Website-Relaunch', 'Suchmaschinenoptimierung', 'Online-Marketing', 'Google Ads' ),
+		'sameAs'      => array( 'https://www.linkedin.com/in/philipp-gebhart-169130aa/' ),
+	);
+
+	$graph[] = array(
+		'@type'      => 'WebSite',
+		'@id'        => $site_id,
+		'url'        => $home,
+		'name'       => 'Philipp Gebhart',
+		'inLanguage' => 'de-DE',
+		'publisher'  => array( '@id' => $biz_id ),
+	);
+
+	// Aktuelle Seite und Breadcrumb.
+	$url   = '';
+	$name  = wp_strip_all_tags( wp_get_document_title() );
+	$type  = 'WebPage';
+	$crumb = array( array( 'Startseite', $home ) );
+
+	if ( is_front_page() ) {
+		$url = $home;
+	} elseif ( is_home() ) {
+		$url   = get_permalink( (int) get_option( 'page_for_posts' ) );
+		$type  = 'CollectionPage';
+		$crumb[] = array( get_the_title( (int) get_option( 'page_for_posts' ) ), $url );
+	} elseif ( is_post_type_archive( 'referenz' ) ) {
+		$url   = get_post_type_archive_link( 'referenz' );
+		$type  = 'CollectionPage';
+		$crumb[] = array( 'Referenzen', $url );
+	} elseif ( is_category() || is_tag() || is_tax() ) {
+		$term  = get_queried_object();
+		$url   = get_term_link( $term );
+		$type  = 'CollectionPage';
+		if ( ! is_tax() && get_option( 'page_for_posts' ) ) {
+			$crumb[] = array( get_the_title( (int) get_option( 'page_for_posts' ) ), get_permalink( (int) get_option( 'page_for_posts' ) ) );
+		} elseif ( is_tax( 'leistung' ) ) {
+			$crumb[] = array( 'Referenzen', get_post_type_archive_link( 'referenz' ) );
+		}
+		$crumb[] = array( $term->name, $url );
+	} elseif ( is_singular() ) {
+		$post_id = get_queried_object_id();
+		$url     = get_permalink( $post_id );
+		if ( is_singular( 'post' ) && get_option( 'page_for_posts' ) ) {
+			$crumb[] = array( get_the_title( (int) get_option( 'page_for_posts' ) ), get_permalink( (int) get_option( 'page_for_posts' ) ) );
+		} elseif ( is_singular( 'referenz' ) ) {
+			$crumb[] = array( 'Referenzen', get_post_type_archive_link( 'referenz' ) );
+		} else {
+			foreach ( array_reverse( get_post_ancestors( $post_id ) ) as $anc ) {
+				$crumb[] = array( get_the_title( $anc ), get_permalink( $anc ) );
+			}
+		}
+		$crumb[] = array( get_the_title( $post_id ), $url );
+		$slug    = get_post_field( 'post_name', $post_id );
+		if ( 'ueber-mich' === $slug ) {
+			$type = 'AboutPage';
+		} elseif ( 'projektanfrage' === $slug ) {
+			$type = 'ContactPage';
+		}
+	}
+
+	if ( ! $url || is_wp_error( $url ) || is_404() || is_search() ) {
+		return $graph;
+	}
+
+	$page = array(
+		'@type'      => $type,
+		'@id'        => $url . '#webpage',
+		'url'        => $url,
+		'name'       => $name,
+		'inLanguage' => 'de-DE',
+		'isPartOf'   => array( '@id' => $site_id ),
+	);
+	$desc = gebhart_current_description();
+	if ( '' !== $desc ) {
+		$page['description'] = $desc;
+	}
+	if ( is_front_page() ) {
+		$page['about'] = array( '@id' => $biz_id );
+	} elseif ( 'AboutPage' === $type ) {
+		$page['mainEntity'] = array( '@id' => $person );
+	}
+	if ( is_singular() && has_post_thumbnail() ) {
+		$page['primaryImageOfPage'] = get_the_post_thumbnail_url( get_queried_object_id(), 'full' );
+	}
+	if ( count( $crumb ) > 1 ) {
+		$items = array();
+		foreach ( $crumb as $i => $c ) {
+			$items[] = array(
+				'@type'    => 'ListItem',
+				'position' => $i + 1,
+				'name'     => wp_strip_all_tags( $c[0] ),
+				'item'     => $c[1],
+			);
+		}
+		$graph[] = array(
+			'@type'           => 'BreadcrumbList',
+			'@id'             => $url . '#breadcrumb',
+			'itemListElement' => $items,
+		);
+		$page['breadcrumb'] = array( '@id' => $url . '#breadcrumb' );
+	}
+	$graph[] = $page;
+
+	// Leistungsseite: Service.
+	if ( is_page() ) {
+		$slug = get_post_field( 'post_name', get_queried_object_id() );
+		if ( isset( $services[ $slug ] ) ) {
+			$service = array(
+				'@type'      => 'Service',
+				'@id'        => $url . '#service',
+				'name'       => $services[ $slug ],
+				'url'        => $url,
+				'provider'   => array( '@id' => $biz_id ),
+				'areaServed' => array( 'Friedberg', 'Augsburg', 'Aichach', 'Bayern' ),
+			);
+			if ( '' !== $desc ) {
+				$service['description'] = $desc;
+			}
+			$graph[] = $service;
+		}
+	}
+
+	// Wissensbeitrag: BlogPosting.
+	if ( is_singular( 'post' ) ) {
+		$post_id = get_queried_object_id();
+		$posting = array(
+			'@type'            => 'BlogPosting',
+			'@id'              => $url . '#article',
+			'headline'         => wp_strip_all_tags( get_the_title( $post_id ) ),
+			'datePublished'    => get_the_date( 'c', $post_id ),
+			'dateModified'     => get_the_modified_date( 'c', $post_id ),
+			'author'           => array( '@id' => $person ),
+			'publisher'        => array( '@id' => $biz_id ),
+			'mainEntityOfPage' => array( '@id' => $url . '#webpage' ),
+			'inLanguage'       => 'de-DE',
+		);
+		if ( '' !== $desc ) {
+			$posting['description'] = $desc;
+		}
+		if ( has_post_thumbnail( $post_id ) ) {
+			$posting['image'] = get_the_post_thumbnail_url( $post_id, 'gebhart-wide' );
+		}
+		$cats = get_the_category( $post_id );
+		if ( ! empty( $cats ) ) {
+			$posting['articleSection'] = $cats[0]->name;
+		}
+		$graph[] = $posting;
+	}
+
+	return $graph;
+}
+
+add_action(
+	'wp_head',
+	function () {
+		if ( gebhart_seo_plugin_active() ) {
+			return;
+		}
+		$data = array(
+			'@context' => 'https://schema.org',
+			'@graph'   => gebhart_schema_graph(),
+		);
+		echo '<script type="application/ld+json">' . wp_json_encode( $data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG ) . '</script>' . "\n";
+	},
+	5
 );
