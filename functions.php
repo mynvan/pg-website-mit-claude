@@ -646,6 +646,13 @@ add_action(
  * FAQ-Daten stehen direkt im Inhalt der Seiten, auf denen die Fragen sichtbar sind.
  * Ist ein SEO-Plugin aktiv, entfällt diese Ausgabe.
  */
+/**
+ * Text für JSON-LD: ohne HTML, HTML-Entities (z. B. &#038;) in echte Zeichen umgewandelt.
+ */
+function gebhart_schema_text( $text ) {
+	return trim( html_entity_decode( wp_strip_all_tags( (string) $text ), ENT_QUOTES | ENT_HTML5, 'UTF-8' ) );
+}
+
 function gebhart_schema_graph() {
 	$home     = trailingslashit( home_url() );
 	$biz_id   = $home . '#business';
@@ -752,7 +759,7 @@ function gebhart_schema_graph() {
 
 	// Aktuelle Seite und Breadcrumb.
 	$url   = '';
-	$name  = wp_strip_all_tags( wp_get_document_title() );
+	$name  = gebhart_schema_text( wp_get_document_title() );
 	$type  = 'WebPage';
 	$crumb = array( array( 'Startseite', $home ) );
 
@@ -811,7 +818,7 @@ function gebhart_schema_graph() {
 	);
 	$desc = gebhart_current_description();
 	if ( '' !== $desc ) {
-		$page['description'] = $desc;
+		$page['description'] = gebhart_schema_text( $desc );
 	}
 	if ( is_front_page() ) {
 		$page['about'] = array( '@id' => $biz_id );
@@ -827,7 +834,7 @@ function gebhart_schema_graph() {
 			$items[] = array(
 				'@type'    => 'ListItem',
 				'position' => $i + 1,
-				'name'     => wp_strip_all_tags( $c[0] ),
+				'name'     => gebhart_schema_text( $c[0] ),
 				'item'     => $c[1],
 			);
 		}
@@ -865,7 +872,7 @@ function gebhart_schema_graph() {
 		$posting = array(
 			'@type'            => 'BlogPosting',
 			'@id'              => $url . '#article',
-			'headline'         => wp_strip_all_tags( get_the_title( $post_id ) ),
+			'headline'         => gebhart_schema_text( get_the_title( $post_id ) ),
 			'datePublished'    => get_the_date( 'c', $post_id ),
 			'dateModified'     => get_the_modified_date( 'c', $post_id ),
 			'author'           => array( '@id' => $person ),
