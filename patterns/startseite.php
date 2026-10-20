@@ -13,7 +13,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Ich plane und entwickle individuelle WordPress-Websites für kleinere Unternehmen, Selbstständige und Praxen. Von der ersten Struktur bis zum laufenden Betrieb hast du einen persönlichen Ansprechpartner – für neue Websites, Relaunches und die Betreuung danach.</p>
+<p>Ich plane und entwickle individuelle WordPress-Websites für Unternehmen, Selbstständige und Praxen. Von der ersten Struktur bis zum laufenden Betrieb hast du einen persönlichen Ansprechpartner – für neue Websites, Relaunches und die Betreuung danach.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph {"className":"hero__location"} -->
