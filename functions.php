@@ -723,6 +723,15 @@ function gebhart_schema_graph() {
 				'closes'    => '18:00',
 			),
 		),
+		'contactPoint'              => array(
+			'@type'             => 'ContactPoint',
+			'contactType'       => 'customer service',
+			'telephone'         => '+49 177 8362302',
+			'email'             => 'info@philippgebhart.de',
+			'url'               => $home . 'projektanfrage/',
+			'availableLanguage' => 'de',
+			'areaServed'        => 'DE',
+		),
 		'founder'                   => array( '@id' => $person ),
 		'sameAs'                    => array(
 			'https://maps.google.com/?cid=2312351749588598698',
@@ -746,6 +755,20 @@ function gebhart_schema_graph() {
 		'worksFor'    => array( '@id' => $biz_id ),
 		'knowsAbout'  => array( 'WordPress', 'Webdesign', 'Website-Relaunch', 'Suchmaschinenoptimierung', 'Online-Marketing', 'Google Ads' ),
 		'sameAs'      => array( 'https://www.linkedin.com/in/philipp-gebhart-169130aa/' ),
+		'affiliation' => array(
+			'@type' => 'EducationalOrganization',
+			'name'  => 'Volkshochschule Augsburg',
+		),
+		'hasOccupation' => array(
+			array( '@type' => 'Occupation', 'name' => 'Webdesigner' ),
+			array( '@type' => 'Occupation', 'name' => 'Dozent für WordPress und Website-Erstellung' ),
+		),
+		'hasCredential' => array(
+			'@type'              => 'EducationalOccupationalCredential',
+			'name'               => 'Google-Analytics-Zertifizierung',
+			'credentialCategory' => 'certificate',
+			'recognizedBy'       => array( '@type' => 'Organization', 'name' => 'Google' ),
+		),
 	);
 
 	$graph[] = array(
@@ -860,7 +883,10 @@ function gebhart_schema_graph() {
 				'areaServed' => array( 'Friedberg', 'Augsburg', 'Aichach', 'Bayern' ),
 			);
 			if ( '' !== $desc ) {
-				$service['description'] = $desc;
+				$service['description'] = gebhart_schema_text( $desc );
+			}
+			if ( 'wordpress-wartung' === $slug ) {
+				$service['offers'] = gebhart_schema_care_offers( $url );
 			}
 			$graph[] = $service;
 		}
@@ -889,11 +915,194 @@ function gebhart_schema_graph() {
 		$cats = get_the_category( $post_id );
 		if ( ! empty( $cats ) ) {
 			$posting['articleSection'] = $cats[0]->name;
+			$posting['about']          = array_map(
+				function ( $c ) {
+					return array( '@type' => 'Thing', 'name' => $c->name );
+				},
+				$cats
+			);
+		}
+		$words                  = count( preg_split( '/\s+/u', trim( wp_strip_all_tags( (string) get_post_field( 'post_content', $post_id ) ) ), -1, PREG_SPLIT_NO_EMPTY ) );
+		$posting['wordCount']   = $words;
+		$posting['timeRequired'] = 'PT' . gebhart_reading_time( $post_id ) . 'M';
+		$tags = get_the_tags( $post_id );
+		if ( $tags && ! is_wp_error( $tags ) ) {
+			$posting['keywords'] = implode( ', ', wp_list_pluck( $tags, 'name' ) );
+		}
+		if ( get_option( 'page_for_posts' ) ) {
+			$posting['isPartOf'] = array( '@id' => get_permalink( (int) get_option( 'page_for_posts' ) ) . '#blog' );
 		}
 		$graph[] = $posting;
 	}
 
+	// Referenz: Arbeitsbeispiel (CreativeWork) mit Kunde und Leistungen.
+	if ( is_singular( 'referenz' ) ) {
+		$post_id = get_queried_object_id();
+		$work    = array(
+			'@type'            => 'CreativeWork',
+			'@id'              => $url . '#work',
+			'name'             => gebhart_schema_text( get_the_title( $post_id ) ),
+			'url'              => $url,
+			'creator'          => array( '@id' => $person ),
+			'publisher'        => array( '@id' => $biz_id ),
+			'mainEntityOfPage' => array( '@id' => $url . '#webpage' ),
+			'inLanguage'       => 'de-DE',
+		);
+		if ( '' !== $desc ) {
+			$work['description'] = gebhart_schema_text( $desc );
+		}
+		$jahr = gebhart_ref( 'ref_jahr', $post_id );
+		if ( preg_match( '/\b(19|20)\d{2}\b/', $jahr, $m ) ) {
+			$work['dateCreated'] = $m[0];
+		}
+		$leistungen = gebhart_ref( 'ref_leistungen', $post_id );
+		if ( '' !== $leistungen ) {
+			$work['keywords'] = gebhart_schema_text( $leistungen );
+		}
+		$kunde = gebhart_ref( 'ref_kunde', $post_id );
+		if ( '' !== $kunde ) {
+			$client = array(
+				'@type' => 'Organization',
+				'name'  => gebhart_schema_text( $kunde ),
+			);
+			$site = gebhart_ref( 'ref_url', $post_id );
+			if ( '' !== $site ) {
+				$client['url'] = esc_url_raw( preg_match( '#^https?://#', $site ) ? $site : 'https://' . $site );
+			}
+			$work['about'] = $client;
+		}
+		if ( has_post_thumbnail( $post_id ) ) {
+			$work['image'] = get_the_post_thumbnail_url( $post_id, 'large' );
+		}
+		$graph[] = $work;
+		foreach ( $graph as $i => $node ) {
+			if ( isset( $node['@id'] ) && $url . '#webpage' === $node['@id'] ) {
+				$graph[ $i ]['mainEntity'] = array( '@id' => $url . '#work' );
+			}
+		}
+	}
+
+	// Referenzen-Übersicht: Liste der Arbeitsbeispiele in der angezeigten Reihenfolge.
+	if ( is_post_type_archive( 'referenz' ) ) {
+		$ids   = get_posts(
+			array(
+				'post_type'      => 'referenz',
+				'posts_per_page' => 50,
+				'fields'         => 'ids',
+				'orderby'        => array( 'menu_order' => 'ASC', 'date' => 'DESC' ),
+				'no_found_rows'  => true,
+			)
+		);
+		$items = array();
+		foreach ( $ids as $i => $rid ) {
+			$items[] = array(
+				'@type'    => 'ListItem',
+				'position' => $i + 1,
+				'url'      => get_permalink( $rid ),
+				'name'     => gebhart_schema_text( get_the_title( $rid ) ),
+			);
+		}
+		if ( $items ) {
+			$graph[] = array(
+				'@type'           => 'ItemList',
+				'@id'             => $url . '#list',
+				'name'            => 'Referenzen',
+				'itemListElement' => $items,
+			);
+			foreach ( $graph as $i => $node ) {
+				if ( isset( $node['@id'] ) && $url . '#webpage' === $node['@id'] ) {
+					$graph[ $i ]['mainEntity'] = array( '@id' => $url . '#list' );
+				}
+			}
+		}
+	}
+
+	// Wissen-Übersicht: Blog mit den neuesten Beiträgen.
+	if ( is_home() && get_option( 'page_for_posts' ) ) {
+		$latest = get_posts(
+			array(
+				'post_type'      => 'post',
+				'posts_per_page' => 10,
+				'no_found_rows'  => true,
+			)
+		);
+		$blog   = array(
+			'@type'      => 'Blog',
+			'@id'        => $url . '#blog',
+			'name'       => 'Wissen – Philipp Gebhart',
+			'url'        => $url,
+			'inLanguage' => 'de-DE',
+			'publisher'  => array( '@id' => $biz_id ),
+			'author'     => array( '@id' => $person ),
+			'blogPost'   => array(),
+		);
+		if ( '' !== $desc ) {
+			$blog['description'] = gebhart_schema_text( $desc );
+		}
+		foreach ( $latest as $lp ) {
+			$blog['blogPost'][] = array(
+				'@type'         => 'BlogPosting',
+				'@id'           => get_permalink( $lp ) . '#article',
+				'headline'      => gebhart_schema_text( get_the_title( $lp ) ),
+				'url'           => get_permalink( $lp ),
+				'datePublished' => get_the_date( 'c', $lp ),
+			);
+		}
+		$graph[] = $blog;
+		foreach ( $graph as $i => $node ) {
+			if ( isset( $node['@id'] ) && $url . '#webpage' === $node['@id'] ) {
+				$graph[ $i ]['mainEntity'] = array( '@id' => $url . '#blog' );
+			}
+		}
+	}
+
 	return $graph;
+}
+
+/**
+ * Angebote der Wartungsseite (Preise wie auf der Seite sichtbar, netto).
+ */
+function gebhart_schema_care_offers( $url ) {
+	$monthly = function ( $name, $price, $desc ) use ( $url ) {
+		return array(
+			'@type'              => 'Offer',
+			'name'               => $name,
+			'description'        => $desc,
+			'url'                => $url,
+			'price'              => $price,
+			'priceCurrency'      => 'EUR',
+			'priceSpecification' => array(
+				'@type'                 => 'UnitPriceSpecification',
+				'price'                 => $price,
+				'priceCurrency'         => 'EUR',
+				'valueAddedTaxIncluded' => false,
+				'unitCode'              => 'MON',
+				'unitText'              => 'Monat',
+			),
+		);
+	};
+	$offers   = array(
+		$monthly( 'Betreuung', 39, 'Technische Pflege: Updates, Sicherungen, Funktionsprüfung und fester Ansprechpartner.' ),
+		$monthly( 'Betreuung Plus', 79, 'Technische Pflege plus bis zu 30 Minuten Änderungszeit pro Monat für kleine Anpassungen.' ),
+		$monthly( 'Hosting inklusive E-Mail (Zusatzoption)', 15, 'Website-Hosting, SSL und E-Mail-Postfächer, zu beiden Paketen ergänzbar.' ),
+	);
+	$offers[] = array(
+		'@type'              => 'Offer',
+		'name'               => 'Zusatzarbeiten',
+		'description'        => 'Arbeiten über die Wartung hinaus nach vorheriger Abstimmung.',
+		'url'                => $url,
+		'price'              => 80,
+		'priceCurrency'      => 'EUR',
+		'priceSpecification' => array(
+			'@type'                 => 'UnitPriceSpecification',
+			'price'                 => 80,
+			'priceCurrency'         => 'EUR',
+			'valueAddedTaxIncluded' => false,
+			'unitCode'              => 'HUR',
+			'unitText'              => 'Stunde',
+		),
+	);
+	return $offers;
 }
 
 add_action(
