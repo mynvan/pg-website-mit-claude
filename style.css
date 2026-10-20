@@ -1295,3 +1295,9 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 .danke-box__rows dd { margin: 0; color: var(--ink); overflow-wrap: anywhere; }
 .danke-box__msg { background: var(--bg); border-radius: var(--radius); padding: 16px; color: var(--ink); overflow-wrap: anywhere; }
 .danke-box__hint { font-size: 14px; color: var(--muted); }
+
+/* Logo: Bildmarke vor dem Namen */
+.site-logo { gap: 10px; }
+.site-logo__mark { display: block; width: auto; height: 32px; flex: none; transition: color .2s ease; }
+.site-logo:hover .site-logo__mark, .site-logo:focus-visible .site-logo__mark { color: var(--accent); }
+@media (max-width: 599px) { .site-logo__mark { height: 28px; } }

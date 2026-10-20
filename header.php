@@ -21,6 +21,7 @@
 			<?php if ( has_custom_logo() ) : ?>
 				<?php echo wp_get_attachment_image( get_theme_mod( 'custom_logo' ), 'full', false, array( 'alt' => get_bloginfo( 'name' ) ) ); ?>
 			<?php else : ?>
+				<?php echo gebhart_logo_mark(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- festes SVG ?>
 				<span class="site-logo__text"><?php bloginfo( 'name' ); ?></span>
 			<?php endif; ?>
 		</a>
