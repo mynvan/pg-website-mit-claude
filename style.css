@@ -246,7 +246,7 @@ html { scroll-padding-top: 96px; }
 	.entry-content > .hero[style*="background-image"] > :is(h1, p) { max-width: calc(560px + var(--gutter) * 2); }
 }
 @media (max-width: 899px) {
-	.hero[style*="background-image"] { background-position: right bottom !important; background-size: 130% auto !important; padding-bottom: clamp(160px, 44vw, 340px); }
+	.hero[style*="background-image"] { background-position: right bottom !important; background-size: 130% auto !important; padding-bottom: calc(50vw + 28px); }
 }
 @media (min-width: 900px) and (max-width: 1199px) {
 	.hero[style*="background-image"] { background-position: center bottom !important; background-size: 100% auto !important; padding-bottom: clamp(320px, 40vw, 470px); }
