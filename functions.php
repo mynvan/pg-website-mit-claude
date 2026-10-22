@@ -12,6 +12,22 @@ define( 'GEBHART_VERSION', wp_get_theme()->get( 'Version' ) );
 require_once get_template_directory() . '/inc/referenzen.php';
 
 /**
+ * eRecht24-Rechtstexte bringen eine eigene H1 mit. Das Theme setzt den Seitentitel
+ * bereits als H1, deshalb wird die erste H1 im Text entfernt (eine H1 pro Seite).
+ */
+add_filter(
+	'do_shortcode_tag',
+	static function ( $output, $tag ) {
+		if ( 'erecht24' !== $tag ) {
+			return $output;
+		}
+		return preg_replace( '#<h1\b[^>]*>.*?</h1>#is', '', (string) $output, 1 );
+	},
+	10,
+	2
+);
+
+/**
  * Grundeinstellungen des Themes.
  */
 function gebhart_setup() {
