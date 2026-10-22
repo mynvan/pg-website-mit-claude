@@ -1240,6 +1240,22 @@ button, [role="button"], .nav-toggle, .btn, .wp-block-button__link, .review-nav 
 .entry-content .um-cta__btn { justify-content: flex-end; }
 @media (max-width: 781px) { .entry-content .um-cta__btn { justify-content: flex-start; } }
 
+/* Weiterbildung (Zertifikate): Über mich, Zeilen im Stil der Wissen-Liste */
+.entry-content .um-cert h2 { margin-top: 0; }
+.entry-content .um-cert ul.cert-list { list-style: none; margin-top: 32px; padding-block: 0; padding-left: var(--gutter); max-width: var(--wrap); }
+.cert-row:first-child { border-top: 1px solid var(--ink); }
+.cert-row { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; align-items: center; gap: 12px 28px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+.cert-row__badge { width: 96px; height: 96px; display: block; }
+.cert-row__main { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.entry-content .cert-row__title { font-size: clamp(20px, 2.2vw, 24px); margin: 0; }
+.entry-content .cert-row__meta { margin: 0; font-size: 14px; color: var(--muted); }
+.cert-row__verify { color: var(--accent-text); white-space: nowrap; font-size: 15px; }
+@media (max-width: 599px) {
+	.cert-row { grid-template-columns: 72px minmax(0, 1fr); gap: 4px 16px; align-items: start; }
+	.cert-row__badge { width: 72px; height: 72px; grid-row: span 2; }
+	.cert-row__verify { grid-column: 2; }
+}
+
 /* Persönliches Foto (Café): Über mich */
 .entry-content .um-photo img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 52% 60%; border-radius: var(--radius); box-shadow: 0 18px 40px -22px rgba(20, 18, 16, .45); display: block; }
 .entry-content .um-cafe h2 { margin-top: 0; }
