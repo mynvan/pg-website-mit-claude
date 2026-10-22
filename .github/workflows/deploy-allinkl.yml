@@ -80,6 +80,19 @@ jobs:
             --exclude 'package.json' \
             ./ "$ALLINKL_USER@$ALLINKL_HOST:$ALLINKL_TARGET_PATH/"
 
+      - name: robots.txt und llms.txt ins Hauptverzeichnis übertragen
+        if: steps.check.outputs.skip != 'true'
+        run: |
+          # Hauptverzeichnis = Zielpfad ohne /wp-content/themes/<theme>
+          WEBROOT="${ALLINKL_TARGET_PATH%/wp-content/themes/*}"
+          case "$WEBROOT" in
+            ""|"$ALLINKL_TARGET_PATH") echo "::error::Hauptverzeichnis nicht ableitbar"; exit 1 ;;
+          esac
+          rsync -az --itemize-changes \
+            -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes" \
+            go-live/robots.txt go-live/llms.txt \
+            "$ALLINKL_USER@$ALLINKL_HOST:$WEBROOT/"
+
       - name: Aufräumen
         if: always()
         run: rm -f ~/.ssh/deploy_key
