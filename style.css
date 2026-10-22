@@ -254,6 +254,8 @@ html { scroll-padding-top: 96px; }
 }
 .hero .hero__location { color: var(--accent-text); font-weight: 600; }
 .block-section { padding-block: clamp(40px, 6vw, 72px); }
+/* Rechtstexte (eRecht24) stehen ohne Abschnitts-Wrapper: gleicher Abstand zum CTA-Band wie bei den anderen Seiten */
+.entry-content--legal { padding-bottom: clamp(40px, 6vw, 72px); }
 .entry-content > .block-section > * + *,
 .entry-content > .block-section > .wp-block-group__inner-container > * + * { margin-top: 20px; }
 .entry-content > .block-section > :is(.grid-2, .grid-3, .grid-4),

@@ -21,7 +21,8 @@ while ( have_posts() ) :
 		</section>
 	<?php endif; ?>
 
-	<div class="entry-content">
+	<?php $gebhart_legal = false !== strpos( $gebhart_content, '[erecht24' ); ?>
+	<div class="entry-content<?php echo $gebhart_legal ? ' entry-content--legal' : ''; ?>">
 		<?php the_content(); ?>
 	</div>
 
