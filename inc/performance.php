@@ -16,6 +16,9 @@ function gebhart_hero_image() {
 		return null;
 	}
 	$full = esc_url_raw( $m[1] );
+	if ( 0 === strpos( $full, '/' ) ) {
+		$full = home_url( $full );
+	}
 	$id   = attachment_url_to_postid( $full );
 	$mid  = $id ? wp_get_attachment_image_src( $id, 'large' ) : null;
 	return array(
