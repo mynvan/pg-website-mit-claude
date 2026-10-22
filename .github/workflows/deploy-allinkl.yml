@@ -45,8 +45,26 @@ jobs:
         if: steps.check.outputs.skip != 'true'
         run: |
           install -m 700 -d ~/.ssh
-          printf '%s\n' "$ALLINKL_SSH_KEY" > ~/.ssh/deploy_key
+          # Schlüssel robust einlesen: akzeptiert normalen Key, einzeilig eingefügten
+          # Key (Zeilenumbrüche verloren) oder Base64-kodierten Key.
+          key="$ALLINKL_SSH_KEY"
+          if ! printf '%s' "$key" | grep -q 'BEGIN'; then
+            key="$(printf '%s' "$key" | base64 -d)"
+          fi
+          body="$(printf '%s' "$key" | tr -d '\r' \
+            | sed -e 's/-----BEGIN OPENSSH PRIVATE KEY-----//' -e 's/-----END OPENSSH PRIVATE KEY-----//' \
+            | tr -d ' \n')"
+          {
+            echo "-----BEGIN OPENSSH PRIVATE KEY-----"
+            printf '%s' "$body" | fold -w 70
+            echo
+            echo "-----END OPENSSH PRIVATE KEY-----"
+          } > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
+          if ! ssh-keygen -y -f ~/.ssh/deploy_key > /dev/null 2>&1; then
+            echo "::error::ALLINKL_SSH_KEY ist kein gültiger privater Schlüssel (Secret neu anlegen)"
+            exit 1
+          fi
           ssh-keyscan -T 15 "$ALLINKL_HOST" >> ~/.ssh/known_hosts
 
       - name: Theme per rsync übertragen
