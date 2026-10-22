@@ -1,0 +1,67 @@
+name: Deploy Theme zu All-Inkl
+
+# Bei jedem Push auf main wird das Theme per rsync über SSH auf den
+# All-Inkl-Webspace übertragen. Manuell startbar über "Run workflow".
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-allinkl
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      ALLINKL_HOST: ${{ secrets.ALLINKL_HOST }}
+      ALLINKL_USER: ${{ secrets.ALLINKL_USER }}
+      ALLINKL_TARGET_PATH: ${{ secrets.ALLINKL_TARGET_PATH }}
+      ALLINKL_SSH_KEY: ${{ secrets.ALLINKL_SSH_KEY }}
+    steps:
+      - name: Secrets prüfen
+        id: check
+        run: |
+          missing=0
+          for v in ALLINKL_HOST ALLINKL_USER ALLINKL_TARGET_PATH ALLINKL_SSH_KEY; do
+            if [ -z "${!v}" ]; then echo "::warning::Secret $v fehlt"; missing=1; fi
+          done
+          if [ "$missing" = "1" ]; then
+            echo "Deploy übersprungen, bis alle Secrets gesetzt sind."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+          # Sicherheitsnetz: rsync --delete läuft nur auf ein Theme-Verzeichnis
+          case "$ALLINKL_TARGET_PATH" in
+            */wp-content/themes/*) ;;
+            "") ;;
+            *) echo "::error::ALLINKL_TARGET_PATH muss auf .../wp-content/themes/<theme> zeigen"; exit 1 ;;
+          esac
+
+      - uses: actions/checkout@v4
+        if: steps.check.outputs.skip != 'true'
+
+      - name: SSH vorbereiten
+        if: steps.check.outputs.skip != 'true'
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$ALLINKL_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -T 15 "$ALLINKL_HOST" >> ~/.ssh/known_hosts
+
+      - name: Theme per rsync übertragen
+        if: steps.check.outputs.skip != 'true'
+        run: |
+          rsync -az --delete --itemize-changes \
+            -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes" \
+            --exclude '.git/' \
+            --exclude '.github/' \
+            --exclude 'go-live/' \
+            --exclude 'content/' \
+            --exclude 'README.md' \
+            --exclude 'package.json' \
+            ./ "$ALLINKL_USER@$ALLINKL_HOST:$ALLINKL_TARGET_PATH/"
+
+      - name: Aufräumen
+        if: always()
+        run: rm -f ~/.ssh/deploy_key
