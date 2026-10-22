@@ -177,7 +177,7 @@
 
 <!-- wp:group {"className":"item icon-shield"} -->
 <div class="wp-block-group item icon-shield"><!-- wp:heading {"level":3} -->
-<h3 class="wp-block-heading">Nach dem Go-live einen Ansprechpartner behalten</h3>
+<h3 class="wp-block-heading">Nach der Veröffentlichung einen Ansprechpartner behalten</h3>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
@@ -338,7 +338,7 @@
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li>Betreuung und Weiterentwicklung auch nach dem Go-live</li>
+<li>Betreuung und Weiterentwicklung auch nach der Veröffentlichung</li>
 <!-- /wp:list-item --></ul>
 <!-- /wp:list -->
 
