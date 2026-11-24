@@ -884,7 +884,7 @@ function gebhart_schema_graph() {
 	$graph[] = array(
 		'@type'                     => 'ProfessionalService',
 		'@id'                       => $biz_id,
-		'name'                      => 'Philipp Gebhart – Webdesign & WordPress',
+		'name'                      => 'Philipp Gebhart | Webdesign & WordPress',
 		'alternateName'             => 'philippgebhart.de',
 		'description'               => 'WordPress-Websites, Relaunch, Wartung und SEO für Unternehmen, Selbstständige und Praxen – persönlich betreut aus Friedberg bei Augsburg.',
 		'url'                       => $home,
@@ -895,16 +895,10 @@ function gebhart_schema_graph() {
 		'vatID'                     => 'DE323183104',
 		'address'                   => array(
 			'@type'           => 'PostalAddress',
-			'streetAddress'   => 'Christophberg 1',
 			'postalCode'      => '86316',
 			'addressLocality' => 'Friedberg',
 			'addressRegion'   => 'Bayern',
 			'addressCountry'  => 'DE',
-		),
-		'geo'                       => array(
-			'@type'     => 'GeoCoordinates',
-			'latitude'  => 48.341769,
-			'longitude' => 11.001211,
 		),
 		'hasMap'                    => 'https://maps.google.com/?cid=2312351749588598698',
 		'areaServed'                => array(
@@ -917,7 +911,7 @@ function gebhart_schema_graph() {
 			array(
 				'@type'     => 'OpeningHoursSpecification',
 				'dayOfWeek' => array( 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday' ),
-				'opens'     => '09:00',
+				'opens'     => '08:00',
 				'closes'    => '18:00',
 			),
 		),
@@ -934,6 +928,7 @@ function gebhart_schema_graph() {
 		'sameAs'                    => array(
 			'https://maps.google.com/?cid=2312351749588598698',
 			'https://www.google.com/search?kgmid=/g/11c1rtc7n9',
+			'https://www.linkedin.com/in/philipp-gebhart-169130aa/',
 		),
 		'hasOfferCatalog'           => array(
 			'@type'           => 'OfferCatalog',
