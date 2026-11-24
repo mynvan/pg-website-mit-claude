@@ -895,10 +895,16 @@ function gebhart_schema_graph() {
 		'vatID'                     => 'DE323183104',
 		'address'                   => array(
 			'@type'           => 'PostalAddress',
+			'streetAddress'   => 'Christophberg 1',
 			'postalCode'      => '86316',
 			'addressLocality' => 'Friedberg',
 			'addressRegion'   => 'Bayern',
 			'addressCountry'  => 'DE',
+		),
+		'geo'                       => array(
+			'@type'     => 'GeoCoordinates',
+			'latitude'  => 48.341769,
+			'longitude' => 11.001211,
 		),
 		'hasMap'                    => 'https://maps.google.com/?cid=2312351749588598698',
 		'areaServed'                => array(
